@@ -1,0 +1,10 @@
+{
+   "printWidth": 80,
+   "tabWidth": 3,
+   "trailingComma": "all",
+   "singleQuote": true,
+   "semi": true,
+   "importOrder": ["^@mui/(.*)$", "^[@/]", "^[./]"],
+   "importOrderSeparation": false,
+   "importOrderSortSpecifiers": true
+}

@@ -1,7 +1,9 @@
 import { Outlet } from 'react-router-dom';
-import { Box } from '@mui/material';
+import { Box, Button, Container, Stack } from '@mui/material';
+import { useThemeContext } from '@/theme/ThemeContext';
 
 const SubLayout = () => {
+   const { toggleColorMode, colorMode } = useThemeContext();
    return (
       <Box
          sx={{
@@ -12,7 +14,12 @@ const SubLayout = () => {
             minHeight: '100vh',
          }}
       >
-         <Outlet />
+         <Container maxWidth="md">
+            <Stack>
+               <Button onClick={toggleColorMode}>{colorMode} mode</Button>
+               <Outlet />
+            </Stack>
+         </Container>
       </Box>
    );
 };

@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
    FormControl,
    FormControlProps,
    FormHelperText,
-   Input,
+   IconButton,
+   InputAdornment,
    InputLabel,
    InputProps,
+   OutlinedInput,
+   styled,
 } from '@mui/material';
 import { FieldProps, useField } from '@formiz/core';
 
@@ -14,20 +18,17 @@ export type FieldInputProps = FieldProps &
    Pick<InputProps, 'placeholder'> & {
       label?: string;
       type?: 'text' | 'password' | 'email';
-      size?: 'sm' | 'md' | 'lg';
       autoFocus?: boolean;
    };
 
 const FieldInput = (props: FieldInputProps) => {
    const { required, label } = props;
-
    const {
       errorMessage,
       id,
       isValid,
       isPristine,
       isSubmitted,
-      isValidating,
       resetKey,
       setValue,
       value,
@@ -38,7 +39,7 @@ const FieldInput = (props: FieldInputProps) => {
       children,
       type = 'text',
       placeholder,
-      size = 'md',
+      size = 'medium',
       autoFocus,
       ...rest
    } = otherProps as Omit<FieldInputProps, keyof FieldProps>;
@@ -58,22 +59,77 @@ const FieldInput = (props: FieldInputProps) => {
       ...rest,
    };
 
+   const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+   const handleMouseDownPassword = (
+      event: React.MouseEvent<HTMLButtonElement>,
+   ) => {
+      event.preventDefault();
+   };
+
    return (
-      <FormControl variant="standard" {...formGroupProps}>
-         {label && <InputLabel htmlFor={id}>{label}</InputLabel>}
-         <Input
+      <FormControlStyled variant="outlined" {...formGroupProps}>
+         <InputLabel shrink variant="outlined" htmlFor={id} disableAnimation>
+            {label}
+         </InputLabel>
+
+         <OutlinedInput
             type={showPassword ? 'text' : type || 'text'}
             id={id}
             value={value ?? ''}
             onChange={(e) => setValue(e.target.value)}
             onFocus={() => setIsTouched(false)}
             onBlur={() => setIsTouched(true)}
-            placeholder={placeholder ? String(placeholder) : ''}
+            placeholder={placeholder ? placeholder : ''}
             autoFocus={autoFocus}
+            endAdornment={
+               type === 'password' ? (
+                  <InputAdornment position="end">
+                     <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                     >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                     </IconButton>
+                  </InputAdornment>
+               ) : undefined
+            }
          />
          {showError && <FormHelperText>{errorMessage}</FormHelperText>}
-      </FormControl>
+      </FormControlStyled>
    );
 };
 
 export default FieldInput;
+
+const FormControlStyled = styled(FormControl)<FormControlProps>(
+   ({ theme }) => ({
+      fontSize: '1rem',
+      paddingTop: '30px',
+      caretColor: theme.palette.primary.main,
+      '& > .MuiFormLabel-root': {
+         transform: 'unset',
+         fontSize: 'inherit',
+      },
+
+      '& .MuiFormLabel-asterisk': {
+         color: theme.palette.error.main,
+      },
+
+      '& .MuiOutlinedInput-root': {
+         fontSize: 'inherit',
+      },
+
+      '& .MuiInputBase-input': {
+         padding: '10px 14px',
+      },
+
+      '& .MuiOutlinedInput-notchedOutline': {
+         borderRadius: '6px',
+         borderColor: `${theme.palette.border.input} !important`,
+         borderWidth: '1px !important',
+      },
+   }),
+);

@@ -1,10 +1,22 @@
 import { PaletteOptions } from '@mui/material';
-import { amber, deepOrange, grey } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
 
 declare module '@mui/material/styles' {
    interface TypeBackground {
       sidebar: string;
       tabPanel: string;
+   }
+
+   interface Palette {
+      border: {
+         input: string;
+      };
+   }
+
+   interface PaletteOptions {
+      border: {
+         input: string;
+      };
    }
 }
 
@@ -23,6 +35,9 @@ const light: PaletteOptions = {
       primary: grey[900],
       secondary: grey[800],
    },
+   border: {
+      input: '#0000003b',
+   },
 };
 
 const dark: PaletteOptions = {
@@ -39,6 +54,9 @@ const dark: PaletteOptions = {
    text: {
       primary: '#fff',
       secondary: grey[500],
+   },
+   border: {
+      input: '#ffffff3b',
    },
 };
 

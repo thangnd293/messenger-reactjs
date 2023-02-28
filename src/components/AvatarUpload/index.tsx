@@ -1,35 +1,41 @@
-import React, { useState } from 'react';
-import { Avatar, Button, CircularProgress, Stack } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import {
+   Avatar,
+   Button,
+   CircularProgress,
+   Stack,
+   Typography,
+} from '@mui/material';
+import useCloudinaryUpload from '@/hook/useCloudinaryUpload';
 import { Cloudinary } from '@cloudinary/url-gen';
 import { thumbnail } from '@cloudinary/url-gen/actions/resize';
 import { FocusOn } from '@cloudinary/url-gen/qualifiers/focusOn';
 import { focusOn } from '@cloudinary/url-gen/qualifiers/gravity';
+import { FieldProps, useField } from '@formiz/core';
 
-const CLOUDINARY_URL = import.meta.env.VITE_CLOUDINARY_URL;
 const CLOUD_NAME = import.meta.env.VITE_CLOUD_NAME;
-const UPLOAD_PRESET = import.meta.env.VITE_UPLOAD_PRESET;
 
-const AvatarUpload = () => {
-   const [avatar, setAvatar] = useState<string | undefined>();
-   const [isUploading, setUploading] = useState(false);
+type Props = FieldProps;
+
+const AvatarUpload = (props: Props) => {
+   const { defaultValue } = props;
+   const [avatar, setAvatar] = useState<string | undefined>(defaultValue);
+   const { setValue } = useField(props);
+   const { handleUploadToCloudinary, uploadStates } = useCloudinaryUpload();
+
+   const isUploading = uploadStates?.[0]?.progress === 'uploading';
 
    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (!file) return;
+      handleUploadToCloudinary([file]);
+   };
 
-      setUploading(true);
-      const formData = new FormData();
-      formData.append('file', file);
+   useEffect(() => {
+      const public_id = uploadStates[0]?.data?.public_id;
+      if (!public_id) return;
 
-      formData.append('upload_preset', UPLOAD_PRESET);
-
-      const body = await fetch(CLOUDINARY_URL, {
-         method: 'POST',
-         body: formData,
-      });
-
-      const { public_id } = await body.json();
-
+      setValue(public_id);
       const cld = new Cloudinary({
          cloud: {
             cloudName: CLOUD_NAME,
@@ -39,19 +45,23 @@ const AvatarUpload = () => {
       const myImage = cld.image(public_id);
 
       myImage.resize(
-         thumbnail().width(80).height(80).gravity(focusOn(FocusOn.face())),
+         thumbnail().width(100).height(100).gravity(focusOn(FocusOn.face())),
       );
 
       setAvatar(myImage.toURL());
-      setUploading(false);
+   }, [uploadStates]);
+
+   const handleDelete = () => {
+      setValue('');
+      setAvatar(undefined);
    };
 
    return (
-      <Stack mx="auto" alignItems="center">
+      <Stack direction="row" alignItems="center">
          <Stack
             sx={{
-               width: 80,
-               height: 80,
+               width: 100,
+               height: 100,
                borderRadius: '50%',
             }}
             alignItems="center"
@@ -69,27 +79,38 @@ const AvatarUpload = () => {
                />
             )}
          </Stack>
-         <Stack>
-            <input
-               style={{
-                  display: 'none',
-               }}
-               id="file-uploader"
-               type="file"
-               accept="image/*"
-               onChange={handleFileChange}
-            />
-            <Button
-               sx={{
-                  marginTop: '10px',
-               }}
-               variant="contained"
-               size="small"
-               component="label"
-               htmlFor="file-uploader"
-            >
-               Choose avatar
-            </Button>
+
+         <Stack px="30px" spacing="12px">
+            <Stack direction="row" gap="14px">
+               <input
+                  style={{
+                     display: 'none',
+                  }}
+                  id="file-uploader"
+                  type="file"
+                  accept=".png, .jpg, .jpeg"
+                  onChange={handleFileChange}
+               />
+               <Button
+                  component="label"
+                  variant="contained"
+                  htmlFor="file-uploader"
+               >
+                  Upload Profile Photo
+               </Button>
+               <Button
+                  variant="outlined"
+                  disabled={!avatar}
+                  onClick={handleDelete}
+               >
+                  Delete
+               </Button>
+            </Stack>
+
+            <Typography variant="smallText" fontSize="12px">
+               *Image size should be at least 320px big, and less then 500kb.
+               Allow file .png, .jpg and .jpeg.
+            </Typography>
          </Stack>
       </Stack>
    );

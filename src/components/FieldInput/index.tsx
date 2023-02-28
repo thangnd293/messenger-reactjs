@@ -128,8 +128,6 @@ const FormControlStyled = styled(FormControl)<FormControlProps>(
 
       '& .MuiOutlinedInput-notchedOutline': {
          borderRadius: '6px',
-         borderColor: `${theme.palette.border.input} !important`,
-         borderWidth: '1px !important',
       },
    }),
 );

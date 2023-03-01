@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Profile from './pages/Profile';
 import AuthRoutes from './pages/auth/AuthRoutes';
 import MainLayout from './pages/layout/MainLayout';
 import { AuthenticatedRouteGuard } from './pages/router/guards/AuthenticatedRouteGuard';
@@ -21,13 +22,15 @@ function App() {
                         </AuthenticatedRouteGuard>
                      }
                   >
+                     <Route path="profile" element={<Profile />} />
+
                      <Route
                         path="t/:conversationId?"
                         element={<div>chats</div>}
                      />
                      <Route
                         path="profile/t/:conversationId?"
-                        element={<div>Profile</div>}
+                        element={<Profile />}
                      />
                      <Route
                         path="groups/t/:conversationId?"

@@ -3,6 +3,7 @@ import { grey } from '@mui/material/colors';
 
 declare module '@mui/material/styles' {
    interface TypeBackground {
+      linkActive: string;
       sidebar: string;
       tabPanel: string;
    }
@@ -30,10 +31,11 @@ const light: PaletteOptions = {
       default: '#ffffff',
       sidebar: '#ffffff',
       tabPanel: '#f5f7fb',
+      linkActive: '#eb455f24',
    },
    text: {
       primary: grey[900],
-      secondary: grey[800],
+      secondary: '#878a92',
    },
    border: {
       input: '#0000003b',
@@ -50,10 +52,11 @@ const dark: PaletteOptions = {
       default: '#272e35',
       sidebar: '#36404a',
       tabPanel: '#303841',
+      linkActive: '#272e3575',
    },
    text: {
       primary: '#eee',
-      secondary: grey[500],
+      secondary: '#878a92',
    },
    border: {
       input: '#ffffff3b',

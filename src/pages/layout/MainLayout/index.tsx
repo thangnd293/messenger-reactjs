@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import Link from '@/components/AutoSuffixLink';
+import { Box } from '@mui/material';
+import Chat from '../Chat';
+import { LayoutProvider } from '../LayoutContext';
+import NavBar from '../NavBar';
 
 const MainLayout = () => {
    useEffect(() => {
@@ -10,14 +13,28 @@ const MainLayout = () => {
          console.log('Unmounted');
       };
    }, []);
+
    return (
-      <div>
-         <Outlet />
-         <div>Thang nguyen</div>
-         <Link to={`/profile`}>Profile</Link>
-         <Link to={`/t/thangdeptrai`}>chat</Link>
-         <Link to={`/groups`}>groups</Link>
-      </div>
+      <LayoutProvider>
+         <Box width="100%">
+            <NavBar />
+            <Box
+               sx={(theme) => ({
+                  width: '100%',
+                  minHeight: '100vh',
+                  paddingBottom: '58px',
+                  bgcolor: theme.palette.background.tabPanel,
+                  [theme.breakpoints.up('md')]: {
+                     paddingLeft: '75px',
+                     paddingBottom: 'unset',
+                  },
+               })}
+            >
+               <Outlet />
+            </Box>
+            <Chat />
+         </Box>
+      </LayoutProvider>
    );
 };
 

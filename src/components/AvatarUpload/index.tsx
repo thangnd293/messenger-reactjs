@@ -63,6 +63,7 @@ const AvatarUpload = (props: Props) => {
                width: 100,
                height: 100,
                borderRadius: '50%',
+               flexShrink: 0,
             }}
             alignItems="center"
             justifyContent="center"
@@ -80,7 +81,7 @@ const AvatarUpload = (props: Props) => {
             )}
          </Stack>
 
-         <Stack px="30px" spacing="12px">
+         <Stack pl="30px" spacing="12px">
             <Stack direction="row" gap="14px">
                <input
                   style={{

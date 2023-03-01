@@ -1,17 +1,27 @@
-import { ButtonProps, Button as MuiButton } from '@mui/material';
+import {
+   ButtonProps,
+   CircularProgress,
+   Button as MuiButton,
+} from '@mui/material';
 
 type Props = ButtonProps & {
    isRounded?: boolean;
+   isLoading?: boolean;
 };
-const Button = ({ isRounded, children, ...rest }: Props) => {
+const Button = ({ sx, isRounded, isLoading, children, ...rest }: Props) => {
    return (
       <MuiButton
          sx={{
             borderRadius: isRounded ? '9999px' : undefined,
+            ...sx,
          }}
          {...rest}
       >
-         {children}
+         {isLoading ? (
+            <CircularProgress size="30px" color="warning" />
+         ) : (
+            children
+         )}
       </MuiButton>
    );
 };

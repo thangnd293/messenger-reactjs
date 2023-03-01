@@ -14,7 +14,7 @@ const SubLayout = () => {
             minHeight: '100vh',
          }}
       >
-         <Container maxWidth="md">
+         <Container maxWidth="sm">
             <Stack>
                <Button onClick={toggleColorMode}>{colorMode} mode</Button>
                <Outlet />

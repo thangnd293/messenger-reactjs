@@ -1,104 +1,83 @@
-import { Box, Step, StepButton, StepLabel, Stepper } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { Checkbox, FormControlLabel, Typography } from '@mui/material';
+import { Stack } from '@mui/system';
 import Button from '@/components/Button';
 import FieldInput from '@/components/FieldInput';
-import { Formiz, FormizStep, useForm } from '@formiz/core';
-import { isEmail, isRequired } from '@formiz/validations';
+import { Formiz, useForm } from '@formiz/core';
+import { isRequired } from '@formiz/validations';
+import { useLogin } from './auth.service';
 
-const steps = [
-   'Enter your email address',
-   'Provide your basic information',
-   'Create your password',
-];
-
-const LoginForm = () => {
+interface Props {
+   onSuccess: () => void;
+}
+const LoginForm = ({ onSuccess }: Props) => {
    const form = useForm();
-   const handleSubmit = (values: unknown) => {
-      console.log(values);
-   };
+
+   const { mutate: login, isLoading } = useLogin({
+      onSuccess,
+      onError: (error) => {
+         toast.error(error.response?.data.message);
+      },
+   });
 
    return (
-      <Formiz connect={form} onValidSubmit={handleSubmit}>
-         <form noValidate onSubmit={form.submitStep}>
-            <Stepper activeStep={form.currentStep?.index || 0} alternativeLabel>
-               {steps.map((label, index) => (
-                  <Step key={label}>
-                     <StepButton
-                        onClick={() =>
-                           form.goToStep(form.steps?.[index].name || '')
-                        }
-                     >
-                        <StepLabel>{label}</StepLabel>
-                     </StepButton>
-                  </Step>
-               ))}
-            </Stepper>
-
-            <Box mt="40px" mb="30px">
-               <FormizStep name="step1">
-                  <FieldInput
-                     name={'email'}
-                     label={"What's your email?"}
-                     type="email"
-                     size="small"
-                     placeholder="Enter your email address"
-                     fullWidth
-                     required
-                     validations={[
-                        {
-                           rule: isRequired(),
-                           message: 'Email is required',
-                        },
-                        {
-                           rule: isEmail(),
-                           message: 'Email is not valid',
-                        },
-                     ]}
-                  />
-               </FormizStep>
-
-               <FormizStep name="step2">
-                  <FieldInput
-                     name={'firstName'}
-                     label={'First name'}
-                     placeholder="Enter your first name"
-                     fullWidth
-                     required
-                  />
-               </FormizStep>
-
-               <FormizStep name="step3">
-                  <FieldInput
-                     name={'password'}
-                     label={'Create a password'}
-                     placeholder="Enter your password"
-                     fullWidth
-                     required
-                  />
-               </FormizStep>
-            </Box>
-
-            {form.isLastStep ? (
-               <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  disabled={!form.isValid}
-               >
-                  Submit
-               </Button>
-            ) : (
-               <Button
-                  isRounded
-                  size="large"
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  disabled={!form.isStepValid}
-               >
-                  Continue
-               </Button>
-            )}
-         </form>
+      <Formiz connect={form} onValidSubmit={login}>
+         <Stack component="form" noValidate onSubmit={form.submit}>
+            <FieldInput
+               label="Email address"
+               name="email"
+               validations={[
+                  {
+                     rule: isRequired(),
+                     message: 'Email is required',
+                  },
+               ]}
+            />
+            <FieldInput
+               sx={{
+                  marginTop: '14px',
+               }}
+               label="Password"
+               name="password"
+               type="password"
+               validations={[
+                  {
+                     rule: isRequired(),
+                     message: 'Email is required',
+                  },
+               ]}
+            />
+            <Typography
+               variant="link"
+               mt="6px"
+               ml="auto"
+               width="fit-content"
+               component={Link}
+               to="/auth/sign-up"
+            >
+               Forget your password
+            </Typography>
+            <FormControlLabel
+               sx={{
+                  width: 'fit-content',
+               }}
+               control={<Checkbox />}
+               label="Remember me"
+            />
+            <Button
+               sx={{
+                  marginTop: '14px',
+               }}
+               isRounded
+               type="submit"
+               fullWidth
+               variant="contained"
+               isLoading={isLoading}
+            >
+               Login
+            </Button>
+         </Stack>
       </Formiz>
    );
 };

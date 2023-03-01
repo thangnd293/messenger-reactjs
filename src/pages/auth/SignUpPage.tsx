@@ -10,7 +10,10 @@ const SignUpPage = () => {
             Create an account
          </Typography>
          <Typography mb="40px" align="center">
-            Already have an account? <Link to={'/auth/login'}>Login</Link>
+            Already have an account?{' '}
+            <Typography variant="link" component={Link} to={'/auth/login'}>
+               Login
+            </Typography>
          </Typography>
          <SignUpForm />
       </Fragment>

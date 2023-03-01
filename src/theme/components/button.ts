@@ -4,6 +4,7 @@ const muiButton: Components['MuiButton'] = {
    styleOverrides: {
       root: {
          textTransform: 'none',
+         padding: '8px 16px',
       },
    },
 };

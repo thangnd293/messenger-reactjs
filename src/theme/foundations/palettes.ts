@@ -52,7 +52,7 @@ const dark: PaletteOptions = {
       tabPanel: '#303841',
    },
    text: {
-      primary: '#fff',
+      primary: '#eee',
       secondary: grey[500],
    },
    border: {

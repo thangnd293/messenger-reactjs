@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import { AUTH_TOKEN_KEY } from '@/pages/auth/AuthContext';
 
-const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl = import.meta.env.VITE_PUBLIC_API_BASE_URL;
 
 Axios.interceptors.request.use(
    (config) => {

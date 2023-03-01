@@ -23,7 +23,7 @@ declare module '@mui/material/styles' {
 const light: PaletteOptions = {
    mode: 'light',
    primary: {
-      main: '#7269ef',
+      main: '#EB455F',
    },
    divider: '#f0eff5',
    background: {
@@ -43,7 +43,7 @@ const light: PaletteOptions = {
 const dark: PaletteOptions = {
    mode: 'dark',
    primary: {
-      main: '#7269ef',
+      main: '#EB455F',
    },
    divider: '#36404a',
    background: {

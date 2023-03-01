@@ -6,7 +6,7 @@ import Button from '@/components/Button';
 import FieldInput from '@/components/FieldInput';
 import { Formiz, useForm } from '@formiz/core';
 import { isRequired } from '@formiz/validations';
-import { useLogin } from './auth.service';
+import { useLogin } from './service';
 
 interface Props {
    onSuccess: () => void;

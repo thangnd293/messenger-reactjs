@@ -1,7 +1,9 @@
 import dayjs from 'dayjs';
+import { toast } from 'react-toastify';
 import { Box, Step, StepButton, StepLabel, Stepper } from '@mui/material';
 import Button from '@/components/Button';
 import { Formiz, useForm } from '@formiz/core';
+import { useSignUp } from '../service';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
@@ -21,22 +23,30 @@ const steps = [
    },
 ];
 
-const SignUpForm = () => {
-   const form = useForm();
+interface Props {
+   onSuccess: () => void;
+}
 
-   const handleSubmit = (values: unknown) => {
-      console.log(values);
-   };
+const SignUpForm = ({ onSuccess }: Props) => {
+   const form = useForm();
+   const { mutate: signUp, isLoading } = useSignUp({
+      onSuccess,
+      onError: (error) => {
+         toast.error(error.response?.data.message);
+      },
+   });
 
    return (
       <Formiz
          connect={form}
-         onValidSubmit={handleSubmit}
+         onValidSubmit={signUp}
          initialValues={{
             email: 'thangnd293@gmail.com',
             firstName: 'Thang',
             lastName: 'Nguyen',
             birthDate: dayjs('09-25-2000'),
+            password: 'Dth@ng293',
+            confirmPassword: 'Dth@ng293',
          }}
       >
          <form noValidate onSubmit={form.submitStep}>
@@ -66,6 +76,7 @@ const SignUpForm = () => {
             {form.isLastStep ? (
                <Button
                   isRounded
+                  isLoading={isLoading}
                   type="submit"
                   fullWidth
                   variant="contained"

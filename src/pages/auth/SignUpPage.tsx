@@ -1,9 +1,14 @@
 import { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import SignUpForm from './SignUpForm';
 
 const SignUpPage = () => {
+   const navigate = useNavigate();
+   const onSignUpSuccess = () => {
+      navigate('/auth/login');
+   };
+
    return (
       <Fragment>
          <Typography mb="10px" variant="h4" component={'h1'} align="center">
@@ -15,7 +20,7 @@ const SignUpPage = () => {
                Login
             </Typography>
          </Typography>
-         <SignUpForm />
+         <SignUpForm onSuccess={onSignUpSuccess} />
       </Fragment>
    );
 };

@@ -18,7 +18,7 @@ const Button = ({ sx, isRounded, isLoading, children, ...rest }: Props) => {
          {...rest}
       >
          {isLoading ? (
-            <CircularProgress size="30px" color="warning" />
+            <CircularProgress size="25px" color="warning" />
          ) : (
             children
          )}

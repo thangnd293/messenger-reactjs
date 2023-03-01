@@ -3,6 +3,8 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AuthRoutes from './pages/auth/AuthRoutes';
+import MainLayout from './pages/layout/MainLayout';
+import { AuthenticatedRouteGuard } from './pages/router/guards/AuthenticatedRouteGuard';
 
 function App() {
    return (
@@ -11,7 +13,14 @@ function App() {
             <Suspense fallback={<p>Loading</p>}>
                <Routes>
                   <Route path="/" element={<Navigate to="t" />} />
-                  <Route path="/*">
+                  <Route
+                     path="/*"
+                     element={
+                        <AuthenticatedRouteGuard>
+                           <MainLayout />
+                        </AuthenticatedRouteGuard>
+                     }
+                  >
                      <Route
                         path="t/:conversationId?"
                         element={<div>chats</div>}

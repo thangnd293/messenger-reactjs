@@ -6,18 +6,27 @@ declare module '@mui/material/styles' {
       linkActive: string;
       sidebar: string;
       tabPanel: string;
+      chatPanel: string;
+      accordion: string;
    }
 
    interface Palette {
       border: {
          input: string;
+         avatar: string;
       };
    }
 
    interface PaletteOptions {
       border: {
          input: string;
+         avatar: string;
       };
+   }
+
+   interface TypeText {
+      tertiary: string;
+      success: string;
    }
 }
 
@@ -32,13 +41,18 @@ const light: PaletteOptions = {
       sidebar: '#ffffff',
       tabPanel: '#f5f7fb',
       linkActive: '#eb455f24',
+      chatPanel: '#ffffff',
+      accordion: '#f5f7fb',
    },
    text: {
-      primary: grey[900],
+      primary: '#495057',
       secondary: '#878a92',
+      tertiary: '#7a7f9a',
+      success: 'rgb(6,214,160)',
    },
    border: {
       input: '#0000003b',
+      avatar: '#f0eff5',
    },
 };
 
@@ -53,13 +67,18 @@ const dark: PaletteOptions = {
       sidebar: '#36404a',
       tabPanel: '#303841',
       linkActive: '#272e3575',
+      chatPanel: '#262e35',
+      accordion: '#495057',
    },
    text: {
-      primary: '#eee',
+      primary: '#e1e9f1',
       secondary: '#878a92',
+      tertiary: '#9aa1b9',
+      success: 'rgb(6,214,160)',
    },
    border: {
       input: '#ffffff3b',
+      avatar: '#36404a',
    },
 };
 

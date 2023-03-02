@@ -20,7 +20,6 @@ export const LayoutProvider: FC<React.PropsWithChildren<unknown>> = ({
    children,
 }) => {
    const [isOpenChat, setIsOpenChat] = React.useState(false);
-   console.log('isOpenChat', isOpenChat);
 
    const openChat = useCallback(() => {
       setIsOpenChat(true);

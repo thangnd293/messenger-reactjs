@@ -7,7 +7,7 @@ const muiListItemButton: Components['MuiListItemButton'] = {
          width: '158px',
          alignItems: 'center',
          justifyContent: 'space-between',
-         padding: '0px 24px',
+         padding: '3px 24px',
          color: 'text.secondary',
       },
    },

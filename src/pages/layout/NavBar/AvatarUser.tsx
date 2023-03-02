@@ -15,9 +15,9 @@ import {
    ListItemButton,
    ListItemIcon,
    ListItemText,
-   Popover,
    useMediaQuery,
 } from '@mui/material';
+import Popover from '@/components/Popover';
 import { useAuthContext } from '@/pages/auth/AuthContext';
 
 type Props = Omit<AvatarProps, 'onClick'>;
@@ -75,11 +75,6 @@ const AvatarUser = (props: Props) => {
             {...props}
          />
          <Popover
-            PaperProps={{
-               variant: 'outlined',
-               elevation: 0,
-               sx: { bgcolor: 'background.default' },
-            }}
             open={open}
             anchorEl={avatarEl}
             onClose={handleClose}

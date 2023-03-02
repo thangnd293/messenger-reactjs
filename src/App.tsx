@@ -23,23 +23,34 @@ function App() {
                      }
                   >
                      <Route path="profile" element={<Profile />} />
+                     <Route
+                        path="profile/t/:conversationId?"
+                        element={<Profile />}
+                     />
+
+                     <Route path="groups" element={<div>groups</div>} />
+                     <Route
+                        path="groups/t/:conversationId?"
+                        element={<div>groups</div>}
+                     />
+
+                     <Route path="contacts" element={<div>contacts</div>} />
+                     <Route
+                        path="contacts/t/:conversationId?"
+                        element={<div>contacts</div>}
+                     />
+
+                     <Route path="settings" element={<div>settings</div>} />
+                     <Route
+                        path="settings/t/:conversationId?"
+                        element={<div>settings</div>}
+                     />
 
                      <Route
                         path="t/:conversationId?"
                         element={<div>chats</div>}
                      />
-                     <Route
-                        path="profile/t/:conversationId?"
-                        element={<Profile />}
-                     />
-                     <Route
-                        path="groups/t/:conversationId?"
-                        element={<div>groups</div>}
-                     />
-                     <Route
-                        path="contacts/t/:conversationId?"
-                        element={<div>contacts</div>}
-                     />
+
                      <Route path="*" element={<Navigate to="/not-found" />} />
                   </Route>
                   <Route path="/auth/*" element={<AuthRoutes />} />

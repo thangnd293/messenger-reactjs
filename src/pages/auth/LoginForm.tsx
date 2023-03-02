@@ -22,7 +22,14 @@ const LoginForm = ({ onSuccess }: Props) => {
    });
 
    return (
-      <Formiz connect={form} onValidSubmit={login}>
+      <Formiz
+         connect={form}
+         onValidSubmit={login}
+         initialValues={{
+            email: 'thangnd293@gmail.com',
+            password: '1234',
+         }}
+      >
          <Stack component="form" noValidate onSubmit={form.submit}>
             <FieldInput
                label="Email address"

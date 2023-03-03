@@ -1,11 +1,11 @@
-import { Link } from 'react-router-dom';
 import { ButtonProps, styled } from '@mui/material';
+import AutoSuffixLink from '@/components/AutoSuffixLink';
 
 interface StyledButtonProps extends ButtonProps {
    active?: string;
 }
 
-export const LinkButton = styled(Link)<StyledButtonProps>(
+export const LinkButton = styled(AutoSuffixLink)<StyledButtonProps>(
    ({ active, theme }) => ({
       display: 'flex',
       justifyContent: 'center',

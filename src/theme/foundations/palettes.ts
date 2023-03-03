@@ -8,6 +8,7 @@ declare module '@mui/material/styles' {
       tabPanel: string;
       chatPanel: string;
       accordion: string;
+      secondary: string;
    }
 
    interface Palette {
@@ -43,6 +44,7 @@ const light: PaletteOptions = {
       linkActive: '#eb455f24',
       chatPanel: '#ffffff',
       accordion: '#f5f7fb',
+      secondary: '#e6ebf5',
    },
    text: {
       primary: '#495057',
@@ -69,6 +71,7 @@ const dark: PaletteOptions = {
       linkActive: '#272e3575',
       chatPanel: '#262e35',
       accordion: '#495057',
+      secondary: '#36404a',
    },
    text: {
       primary: '#e1e9f1',

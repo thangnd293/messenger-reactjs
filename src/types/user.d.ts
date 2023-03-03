@@ -4,4 +4,7 @@ export type User = {
    lastName: string;
    email: string;
    birthDate: string;
+   isOnline?: boolean;
+   lastActive?: string;
+   avatar?: string;
 };

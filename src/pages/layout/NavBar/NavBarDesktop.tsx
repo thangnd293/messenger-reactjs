@@ -31,7 +31,7 @@ const NavBarDesktop = () => {
                   <Tooltip key={nav.name} title={nav.name} placement="top">
                      <LinkButton
                         to={nav.to}
-                        active={pathname.includes(nav.to).toString()}
+                        active={pathname.startsWith(nav.to).toString()}
                      >
                         {nav.icon}
                      </LinkButton>

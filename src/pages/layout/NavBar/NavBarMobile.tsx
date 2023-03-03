@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { Stack, Tooltip } from '@mui/material';
+import { Stack } from '@mui/material';
 import AvatarUser from './AvatarUser';
 import { navs } from './const';
 import { LinkButton } from './styles';
@@ -33,19 +33,12 @@ const NavBarMobile = () => {
          >
             {navs.map((nav) => {
                return (
-                  <Tooltip
-                     key={nav.name}
-                     title={nav.name}
-                     arrow
-                     placement="top"
+                  <LinkButton
+                     to={nav.to}
+                     active={pathname.includes(nav.to).toString()}
                   >
-                     <LinkButton
-                        to={nav.to}
-                        active={pathname.includes(nav.to).toString()}
-                     >
-                        {nav.icon}
-                     </LinkButton>
-                  </Tooltip>
+                     {nav.icon}
+                  </LinkButton>
                );
             })}
 

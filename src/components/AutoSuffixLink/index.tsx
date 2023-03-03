@@ -1,18 +1,21 @@
-import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { forwardRef } from 'react';
+import { Link, LinkProps, useParams } from 'react-router-dom';
 
 type Props = React.ComponentProps<typeof Link>;
-const AutoSuffixLink = (props: Props) => {
+type Ref = React.ForwardRefExoticComponent<
+   LinkProps & React.RefAttributes<HTMLAnchorElement>
+>;
+const AutoSuffixLink = forwardRef<any, Props>((props, ref) => {
    const { conversationId } = useParams();
    let { to, ...restProps } = props;
 
-   const [origin, hasConversation] = props.to.toString().split('/t/');
+   const [origin, hasConversation] = props.to.toString().split('/t');
 
    const isAddSuffix = !hasConversation && conversationId;
 
    to = isAddSuffix ? `${origin}/t/${conversationId}` : to;
 
-   return <Link to={to} {...restProps} />;
-};
+   return <Link ref={ref} to={to} {...restProps} />;
+});
 
 export default AutoSuffixLink;

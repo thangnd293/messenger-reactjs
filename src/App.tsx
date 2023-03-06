@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Chats from './pages/Chats';
+import Contact from './pages/Contact';
 import Profile from './pages/Profile';
 import AuthRoutes from './pages/auth/AuthRoutes';
 import MainLayout from './pages/layout/MainLayout';
@@ -35,10 +36,10 @@ function App() {
                         element={<div>groups</div>}
                      />
 
-                     <Route path="contacts" element={<div>contacts</div>} />
+                     <Route path="contacts" element={<Contact />} />
                      <Route
                         path="contacts/t/:conversationId?"
-                        element={<div>contacts</div>}
+                        element={<Contact />}
                      />
 
                      <Route path="settings" element={<div>settings</div>} />

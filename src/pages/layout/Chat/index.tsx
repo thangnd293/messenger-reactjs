@@ -4,7 +4,6 @@ import {
    Button,
    Drawer,
    DrawerProps,
-   styled,
    useMediaQuery,
 } from '@mui/material';
 import { useLayoutContext } from '../LayoutContext';
@@ -13,7 +12,7 @@ const Chat = () => {
    const { isOpenChat, closeChat } = useLayoutContext();
    const isMobile = useMediaQuery('(max-width:900px)');
 
-   const Wrapper = isMobile ? DrawerStyled : Box;
+   const Wrapper = isMobile ? Drawer : Box;
 
    const drawerProps: DrawerProps = {
       anchor: 'right',
@@ -21,6 +20,17 @@ const Chat = () => {
       onClose: closeChat,
       hideBackdrop: true,
       elevation: 0,
+
+      PaperProps: {
+         sx(theme) {
+            return {
+               bgcolor: theme.palette.background.chatPanel,
+               width: '100%',
+               right: 0,
+               left: 'unset',
+            };
+         },
+      },
    };
 
    const boxProps: Pick<BoxProps, 'sx'> = {
@@ -41,12 +51,3 @@ const Chat = () => {
 };
 
 export default Chat;
-
-const DrawerStyled = styled(Drawer)(({ theme }) => ({
-   '& .MuiDrawer-paper': {
-      bgcolor: theme.palette.background.chatPanel,
-      width: '100%',
-      right: 0,
-      left: 'unset',
-   },
-}));

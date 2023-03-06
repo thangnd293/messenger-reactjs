@@ -1,5 +1,9 @@
-import { Outlet } from 'react-router-dom';
+import Axios from 'axios';
+import { useEffect, useRef } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Stack, useMediaQuery } from '@mui/material';
+import { AUTH_TOKEN_KEY } from '@/pages/auth/AuthContext';
+import { useQueryClient } from '@tanstack/react-query';
 import Chat from '../Chat';
 import { LayoutProvider } from '../LayoutContext';
 import NavBarDesktop from '../NavBar/NavBarDesktop';
@@ -7,6 +11,34 @@ import NavBarMobile from '../NavBar/NavBarMobile';
 
 const MainLayout = () => {
    const isMobile = useMediaQuery('(max-width:900px)');
+   const { pathname } = useLocation();
+   const pathnameRef = useRef(pathname);
+   pathnameRef.current = pathname;
+   const queryCache = useQueryClient();
+   const navigate = useNavigate();
+
+   useEffect(() => {
+      const interceptor = Axios.interceptors.response.use(
+         function (response) {
+            return response;
+         },
+         function (error) {
+            if (
+               error?.response?.status === 401 &&
+               pathnameRef.current !== '/login'
+            ) {
+               queryCache.cancelQueries();
+               localStorage.removeItem(AUTH_TOKEN_KEY);
+               navigate('/auth/login');
+            }
+
+            return Promise.reject(error);
+         },
+      );
+      return () => {
+         Axios.interceptors.response.eject(interceptor);
+      };
+   }, []);
 
    return (
       <LayoutProvider>

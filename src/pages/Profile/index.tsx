@@ -13,10 +13,10 @@ import {
    Avatar,
    Box,
    Divider,
-   Skeleton,
    Typography,
 } from '@mui/material';
 import { Stack } from '@mui/system';
+import AccordionContent from '@/components/AccordionContent';
 import Header from './Header';
 import { useAccount } from './service/use-account';
 
@@ -65,12 +65,11 @@ const Profile = () => {
                <Accordion disableGutters elevation={0}>
                   <AccordionSummary expandIcon={<RiArrowDownSLine />}>
                      <Typography
-                        variant="smallTextDark"
-                        sx={{
-                           display: 'flex',
-                           alignItems: 'center',
-                           gap: '8px',
-                        }}
+                        variant="smallTextBold"
+                        component={Stack}
+                        direction="row"
+                        alignItems="center"
+                        gap="8px"
                      >
                         <RiUser2Line />
                         About
@@ -81,8 +80,6 @@ const Profile = () => {
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '16px',
-                        padding: '20px',
-                        backgroundColor: '#fff',
                      }}
                   >
                      <AccordionContent title="Name" content={fullName} />
@@ -102,7 +99,7 @@ const Profile = () => {
                <Accordion disableGutters elevation={0}>
                   <AccordionSummary expandIcon={<RiArrowDownSLine />}>
                      <Typography
-                        variant="smallTextDark"
+                        variant="smallTextBold"
                         sx={{
                            display: 'flex',
                            alignItems: 'center',
@@ -113,12 +110,7 @@ const Profile = () => {
                         Attached Files
                      </Typography>
                   </AccordionSummary>
-                  <AccordionDetails
-                     sx={{
-                        padding: '20px',
-                        backgroundColor: '#fff',
-                     }}
-                  >
+                  <AccordionDetails>
                      <Typography>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                         Suspendisse malesuada lacus ex, sit amet blandit leo
@@ -133,24 +125,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-const AccordionContent = ({
-   title,
-   content,
-}: {
-   title: string;
-   content: string | undefined;
-}) => {
-   return (
-      <Stack>
-         <Typography fontSize="15px" variant="smallText">
-            {title}
-         </Typography>
-         {content ? (
-            <Typography variant="smallTextDark">{content}</Typography>
-         ) : (
-            <Skeleton variant="text" sx={{ fontSize: '14px' }} />
-         )}
-      </Stack>
-   );
-};

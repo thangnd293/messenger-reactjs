@@ -33,11 +33,11 @@ const Conversation = ({ conversation }: Props) => {
       >
          <Avatar {...conversation} />
          <Stack>
-            <Typography variant="smallTextDark">
+            <Typography variant="smallTextBold">
                {`${user.lastName} ${user.firstName}`}
             </Typography>
             <Typography component="p">
-               <Typography variant={isSeen ? 'smallText' : 'smallTextDark'}>
+               <Typography variant={isSeen ? 'smallText' : 'smallTextBold'}>
                   {truncateString(lastMessage.content, 18)}
                </Typography>
                <Typography variant="smallText" component="span">

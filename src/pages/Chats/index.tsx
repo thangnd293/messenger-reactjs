@@ -4,11 +4,10 @@ import { Box, InputAdornment, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
 import Input from '@/components/Input';
 import Conversation from './Conversation';
-import { useConversations } from './service/use-converstions';
+import { useConversations } from './service/use-conversations';
 
 const Chats = () => {
    const { data: conversations } = useConversations();
-   console.log(conversations);
 
    return (
       <Fragment>

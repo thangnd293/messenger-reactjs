@@ -1,4 +1,5 @@
 import muiAccordion from './accordion';
+import muiAccordionDetails from './accordion-details';
 import muiButton from './button';
 import muiList from './list';
 import muiListItem from './list-item';
@@ -14,4 +15,5 @@ export default {
    MuiListItemIcon: muiListItemIcon,
    MuiListItemText: muiListItemText,
    MuiAccordion: muiAccordion,
+   MuiAccordionDetails: muiAccordionDetails,
 };

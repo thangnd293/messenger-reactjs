@@ -25,7 +25,7 @@ const typography:
       fontSize: 16,
       fontWeight: 600,
    },
-   smallTextDark: {
+   smallTextBold: {
       fontSize: 14,
       fontWeight: 600,
       color: palette.text.primary,
@@ -38,13 +38,13 @@ declare module '@mui/material/styles' {
    interface TypographyVariants {
       smallText: React.CSSProperties;
       link: React.CSSProperties;
-      smallTextDark: React.CSSProperties;
+      smallTextBold: React.CSSProperties;
    }
 
    interface TypographyVariantsOptions {
       smallText?: React.CSSProperties;
       link?: React.CSSProperties;
-      smallTextDark?: React.CSSProperties;
+      smallTextBold?: React.CSSProperties;
    }
 }
 
@@ -52,6 +52,6 @@ declare module '@mui/material/Typography' {
    interface TypographyPropsVariantOverrides {
       smallText: true;
       link: true;
-      smallTextDark: true;
+      smallTextBold: true;
    }
 }

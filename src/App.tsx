@@ -8,6 +8,7 @@ import Profile from './pages/Profile';
 import AuthRoutes from './pages/auth/AuthRoutes';
 import MainLayout from './pages/layout/MainLayout';
 import { AuthenticatedRouteGuard } from './pages/router/guards/AuthenticatedRouteGuard';
+import './theme/message.css';
 
 function App() {
    return (
@@ -50,7 +51,7 @@ function App() {
 
                      <Route path="t/:conversationId?" element={<Chats />} />
 
-                     {/* <Route path="*" element={<Navigate to="/not-found" />} /> */}
+                     <Route path="*" element={<Navigate to="/not-found" />} />
                   </Route>
                   <Route path="/auth/*" element={<AuthRoutes />} />
                   <Route path="/not-found" element={<div>404</div>} />

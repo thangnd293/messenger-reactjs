@@ -28,7 +28,12 @@ const NavBarDesktop = () => {
          <Stack width="100%" alignItems="center" px="8px" gap="14px">
             {navs.map((nav) => {
                return (
-                  <Tooltip key={nav.name} title={nav.name} placement="top">
+                  <Tooltip
+                     key={nav.name}
+                     title={nav.name}
+                     placement="top"
+                     disableInteractive
+                  >
                      <LinkButton
                         to={nav.to}
                         active={pathname.startsWith(nav.to).toString()}

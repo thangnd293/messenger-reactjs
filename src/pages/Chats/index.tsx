@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import { RiSearchLine } from 'react-icons/ri';
+import { useParams } from 'react-router-dom';
 import { Box, InputAdornment, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
 import Input from '@/components/Input';
@@ -8,6 +9,7 @@ import { useConversations } from './service/use-conversations';
 
 const Chats = () => {
    const { data: conversations } = useConversations();
+   const { conversationId } = useParams();
 
    return (
       <Fragment>
@@ -36,6 +38,7 @@ const Chats = () => {
                   <Conversation
                      key={conversation._id}
                      conversation={conversation}
+                     active={conversationId === conversation._id}
                   />
                ))}
             </Stack>

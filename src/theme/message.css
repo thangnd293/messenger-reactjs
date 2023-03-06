@@ -1,0 +1,89 @@
+.message-wrapper {
+    display: flex;
+    width: 100%;
+    padding: 0 10px;
+    align-items: flex-end;
+}
+
+.message-wrapper + .message-wrapper {
+    margin-top: 2px;
+}
+
+/* Message received*/
+
+.message-wrapper.sent {
+    justify-content: end;
+}
+
+.message-wrapper.received > .avatar {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* First */
+.message-wrapper.received:not(
+        .message-wrapper.received + .message-wrapper.received
+    )
+    > .message {
+    border-radius: 18px 18px 18px 4px;
+}
+
+/* Middle */
+.message-wrapper.received + .message-wrapper.received > .message {
+    border-radius: 4px 18px 18px 4px;
+}
+
+/* End */
+.message-wrapper.received:not(:has(+ .message-wrapper.received)) > .message {
+    border-radius: 4px 18px 18px 18px;
+}
+
+.message-wrapper.received:not(:has(+ .message-wrapper.received)) > .avatar {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Default */
+.message-wrapper.received:not(
+        .message-wrapper.received + .message-wrapper.received
+    ):not(:has(+ .message-wrapper.received))
+    > .message {
+    border-radius: 18px;
+}
+
+/* First */
+.message-wrapper.message-wrapper.sent:not(
+        .message-wrapper.sent + .message-wrapper.sent
+    )
+    > .message {
+    border-radius: 18px 18px 4px 18px;
+}
+
+/* Middle */
+.message-wrapper.sent + .message-wrapper.sent > .message {
+    border-radius: 18px 4px 4px 18px;
+}
+
+/* End */
+.message-wrapper.sent:not(:has(+ .message-wrapper.sent)) > .message {
+    border-radius: 18px 4px 18px 18px;
+}
+
+.message-wrapper.sent:not(:has(+ .message-wrapper.sent)) > .sent-status {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Default */
+.message-wrapper.sent:not(.message-wrapper.sent + .message-wrapper.sent):not(
+        :has(+ .message-wrapper.sent)
+    )
+    > .message {
+    border-radius: 18px;
+}
+
+/* Default send status */
+/* .message-wrapper.sent > .sent-status {
+    opacity: 0;
+    visibility: hidden;
+} */

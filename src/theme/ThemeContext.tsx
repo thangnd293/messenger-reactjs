@@ -6,7 +6,7 @@ import {
    PaletteMode,
    useMediaQuery,
 } from '@mui/material';
-import theme from './theme';
+import { theme } from './theme';
 
 interface ColorModeState {
    colorMode: PaletteMode;

@@ -3,11 +3,9 @@ import components from './components';
 import palettes from './foundations/palettes';
 import typography from './typography';
 
-const theme = (colorMode: PaletteMode) =>
+export const theme = (colorMode: PaletteMode) =>
    createTheme({
       typography,
       palette: palettes[colorMode],
       components,
    });
-
-export default theme;

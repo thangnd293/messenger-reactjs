@@ -34,8 +34,9 @@ const NavBarMobile = () => {
             {navs.map((nav) => {
                return (
                   <LinkButton
+                     key={nav.name}
                      to={nav.to}
-                     active={pathname.includes(nav.to).toString()}
+                     active={pathname.startsWith(nav.to).toString()}
                   >
                      {nav.icon}
                   </LinkButton>

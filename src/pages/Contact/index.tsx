@@ -15,7 +15,11 @@ const Contact = () => {
          </Typography>
          <Stack mt="14px">
             {contacts?.map((contact) => (
-               <ContactUser key={contact._id} {...contact.user} />
+               <ContactUser
+                  key={contact._id}
+                  {...contact.user}
+                  _id={contact._id}
+               />
             ))}
          </Stack>
       </Box>

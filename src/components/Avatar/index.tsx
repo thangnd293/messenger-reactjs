@@ -1,15 +1,17 @@
 import { Badge, Avatar as MuiAvatar, SxProps, styled } from '@mui/material';
 
 interface Props {
+   className?: string;
    name: string;
    avatar?: string;
    isOnline?: boolean;
    sx?: SxProps;
 }
 
-const Avatar = ({ name, avatar, isOnline, sx }: Props) => {
+const Avatar = ({ name, avatar, isOnline, sx, className }: Props) => {
    return (
       <StyledBadge
+         className={className}
          sx={sx}
          overlap="circular"
          anchorOrigin={{

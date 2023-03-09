@@ -80,3 +80,8 @@
     > .message {
     border-radius: 18px;
 }
+
+.message {
+    max-width: 60%;
+    word-wrap: break-word;
+}

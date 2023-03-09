@@ -9,6 +9,7 @@ interface Props {
    status: MessageStatusEnum;
    children: ReactNode;
 }
+
 const MessageSent = ({ status, children }: Props) => {
    return (
       <Box className={`message-wrapper sent`}>

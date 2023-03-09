@@ -2,9 +2,11 @@ import Axios from 'axios';
 import { useEffect, useRef } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Stack, useMediaQuery } from '@mui/material';
-import { AUTH_TOKEN_KEY } from '@/pages/auth/AuthContext';
+import { useAuthContext } from '@/pages/auth/AuthContext';
+import { SocketSingleton } from '@/socket';
 import { useQueryClient } from '@tanstack/react-query';
 import Chat from '../Chat';
+import { ChatProvider } from '../Chat/ChatContext';
 import { LayoutProvider } from '../LayoutContext';
 import NavBarDesktop from '../NavBar/NavBarDesktop';
 import NavBarMobile from '../NavBar/NavBarMobile';
@@ -16,6 +18,7 @@ const MainLayout = () => {
    pathnameRef.current = pathname;
    const queryCache = useQueryClient();
    const navigate = useNavigate();
+   const { updateToken } = useAuthContext();
 
    useEffect(() => {
       const interceptor = Axios.interceptors.response.use(
@@ -25,10 +28,11 @@ const MainLayout = () => {
          function (error) {
             if (
                error?.response?.status === 401 &&
-               pathnameRef.current !== '/login'
+               pathnameRef.current !== '/auth/login'
             ) {
                queryCache.cancelQueries();
-               localStorage.removeItem(AUTH_TOKEN_KEY);
+               updateToken(undefined);
+
                navigate('/auth/login');
             }
 
@@ -37,6 +41,14 @@ const MainLayout = () => {
       );
       return () => {
          Axios.interceptors.response.eject(interceptor);
+      };
+   }, []);
+
+   useEffect(() => {
+      SocketSingleton.getInstance();
+
+      return () => {
+         SocketSingleton.disconnect();
       };
    }, []);
 
@@ -57,17 +69,21 @@ const MainLayout = () => {
                   height: '100vh',
                   overflowY: 'auto',
                   paddingBottom: '58px',
-                  bgcolor: theme.palette.background.tabPanel,
+                  bgcolor: 'background.tabPanel',
+
                   [theme.breakpoints.up('md')]: {
                      width: 'calc(380px + 75px)',
                      paddingLeft: '75px',
                      paddingBottom: 'unset',
+                     flexShrink: 0,
                   },
                })}
             >
                <Outlet />
             </Stack>
-            <Chat />
+            <ChatProvider>
+               <Chat />
+            </ChatProvider>
          </Box>
       </LayoutProvider>
    );

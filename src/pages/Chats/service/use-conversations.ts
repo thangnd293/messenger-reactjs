@@ -17,6 +17,7 @@ export const useConversations = (
       () => Axios.get('/users/conversations').then((res) => res.data),
       {
          ...config,
+         refetchOnWindowFocus: false,
       },
    );
 };

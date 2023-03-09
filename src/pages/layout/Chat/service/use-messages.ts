@@ -18,6 +18,11 @@ export const useMessages = (
       () => Axios.get(`/messages/conversation/${_id}`).then((res) => res.data),
       {
          ...config,
+         enabled: !!_id,
+         refetchOnWindowFocus: false,
+         cacheTime: 60000,
+         staleTime: Infinity,
+         keepPreviousData: true,
       },
    );
    return {

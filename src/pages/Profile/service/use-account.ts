@@ -17,6 +17,7 @@ export const useAccount = (
             }
          },
          ...config,
+         refetchOnWindowFocus: false,
       },
    );
 };

@@ -15,9 +15,15 @@ export const useConversation = (
 ) => {
    const { data, ...rest } = useQuery(
       ['conversation', _id],
-      () => Axios.get(`/conversations/${_id}`).then((res) => res.data),
+      () => {
+         return Axios.get(`/conversations/${_id}`).then((res) => res.data);
+      },
       {
          ...config,
+         refetchOnWindowFocus: false,
+         cacheTime: 60000,
+         staleTime: Infinity,
+         enabled: !!_id,
       },
    );
    return {

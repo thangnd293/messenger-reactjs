@@ -27,7 +27,7 @@ const LoginForm = ({ onSuccess }: Props) => {
          onValidSubmit={login}
          initialValues={{
             email: 'thangnd293@gmail.com',
-            password: '1234',
+            password: 'Dth@ng293',
          }}
       >
          <Stack component="form" noValidate onSubmit={form.submit}>

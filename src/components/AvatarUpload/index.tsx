@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {
-   Avatar,
-   Button,
-   CircularProgress,
-   Stack,
-   Typography,
-} from '@mui/material';
+import { Button, CircularProgress, Stack, Typography } from '@mui/material';
 import useCloudinaryUpload from '@/hook/useCloudinaryUpload';
 import { Cloudinary } from '@cloudinary/url-gen';
 import { thumbnail } from '@cloudinary/url-gen/actions/resize';
 import { FocusOn } from '@cloudinary/url-gen/qualifiers/focusOn';
 import { focusOn } from '@cloudinary/url-gen/qualifiers/gravity';
 import { FieldProps, useField } from '@formiz/core';
+import Avatar from '../Avatar';
 
 const CLOUD_NAME = import.meta.env.VITE_CLOUD_NAME;
 
@@ -71,13 +66,7 @@ const AvatarUpload = (props: Props) => {
             {isUploading ? (
                <CircularProgress size="30px" />
             ) : (
-               <Avatar
-                  sx={{
-                     width: '100%',
-                     height: '100%',
-                  }}
-                  src={avatar}
-               />
+               <Avatar width={100} height={100} avatar={avatar} />
             )}
          </Stack>
 

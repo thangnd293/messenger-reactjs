@@ -8,6 +8,7 @@ import Profile from './pages/Profile';
 import AuthRoutes from './pages/auth/AuthRoutes';
 import MainLayout from './pages/layout/MainLayout';
 import { AuthenticatedRouteGuard } from './pages/router/guards/AuthenticatedRouteGuard';
+import './theme/global.css';
 import './theme/message.css';
 
 function App() {

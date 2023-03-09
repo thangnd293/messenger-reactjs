@@ -1,7 +1,6 @@
 .message-wrapper {
     display: flex;
     width: 100%;
-    padding: 0 10px;
     align-items: flex-end;
 }
 
@@ -81,9 +80,3 @@
     > .message {
     border-radius: 18px;
 }
-
-/* Default send status */
-/* .message-wrapper.sent > .sent-status {
-    opacity: 0;
-    visibility: hidden;
-} */

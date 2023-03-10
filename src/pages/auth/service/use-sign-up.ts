@@ -20,7 +20,7 @@ export const useSignUp = (
             password,
             firstName,
             lastName,
-            birthDate: birthDate.toISOString(),
+            birthDate: birthDate.toString(),
             avatar: avatar || undefined,
          }),
       config,

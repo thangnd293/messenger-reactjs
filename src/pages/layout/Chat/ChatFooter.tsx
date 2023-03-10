@@ -37,7 +37,7 @@ const ChatFooter = () => {
             content,
             type,
             conversation: conversation?._id,
-            sendAt: new Date().toDateString(),
+            sendAt: new Date().toString(),
          },
          (idClient: string) => {
             setMessages((prev) => {
@@ -65,18 +65,20 @@ const ChatFooter = () => {
       if (!message || !conversation || !user) return;
 
       const idClient = uuidv4();
+
+      const sendingMessage: MessageWithoutId = {
+         idClient,
+         content: message,
+         type: MessageTypeEnum.Text,
+         sender: user,
+         conversation: conversation._id,
+         createdAt: new Date().toString(),
+         status: MessageStatusEnum.Sending,
+         seenBy: [],
+         sentAt: new Date().toString(),
+      };
+
       setMessages((prev) => {
-         const sendingMessage: MessageWithoutId = {
-            idClient,
-            content: message,
-            type: MessageTypeEnum.Text,
-            sender: user,
-            conversation: conversation._id,
-            createdAt: new Date().toDateString(),
-            status: MessageStatusEnum.Sending,
-            seenBy: [],
-            sentAt: new Date().toDateString(),
-         };
          return [...prev, sendingMessage];
       });
 

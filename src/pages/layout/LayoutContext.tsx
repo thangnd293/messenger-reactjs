@@ -1,6 +1,14 @@
-import React, { FC, createContext, useCallback, useContext } from 'react';
+import React, {
+   FC,
+   createContext,
+   useCallback,
+   useContext,
+   useEffect,
+   useState,
+} from 'react';
 
 interface LayoutValue {
+   isFocusApp: boolean;
    isOpenChat: boolean;
    openChat: () => void;
    closeChat: () => void;
@@ -8,6 +16,7 @@ interface LayoutValue {
 }
 
 const defaultLayoutValue: LayoutValue = {
+   isFocusApp: true,
    isOpenChat: false,
    openChat: () => {},
    closeChat: () => {},
@@ -19,7 +28,8 @@ const LayoutContext = createContext<LayoutValue>(defaultLayoutValue);
 export const LayoutProvider: FC<React.PropsWithChildren<unknown>> = ({
    children,
 }) => {
-   const [isOpenChat, setIsOpenChat] = React.useState(false);
+   const [isFocusApp, setIsFocusApp] = useState(false);
+   const [isOpenChat, setIsOpenChat] = useState(false);
 
    const openChat = useCallback(() => {
       setIsOpenChat(true);
@@ -33,9 +43,35 @@ export const LayoutProvider: FC<React.PropsWithChildren<unknown>> = ({
       setIsOpenChat((prev) => !prev);
    }, []);
 
+   useEffect(() => {
+      const handleFocus = () => {
+         document.title = 'Chat App';
+         setIsFocusApp(true);
+      };
+
+      const handleBlur = () => {
+         document.title = 'Chat App (Đang ẩn)';
+         setIsFocusApp(false);
+      };
+
+      window.addEventListener('focus', handleFocus);
+      window.addEventListener('blur', handleBlur);
+
+      return () => {
+         window.removeEventListener('focus', handleFocus);
+         window.removeEventListener('blur', handleBlur);
+      };
+   }, []);
+
    return (
       <LayoutContext.Provider
-         value={{ isOpenChat, openChat, closeChat, toggleChat }}
+         value={{
+            isFocusApp,
+            isOpenChat,
+            openChat,
+            closeChat,
+            toggleChat,
+         }}
       >
          {children}
       </LayoutContext.Provider>

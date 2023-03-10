@@ -9,6 +9,7 @@ declare module '@mui/material/styles' {
       chatPanel: string;
       accordion: string;
       secondary: string;
+      scrollDown: string;
    }
 
    interface Palette {
@@ -45,6 +46,7 @@ const light: PaletteOptions = {
       chatPanel: '#ffffff',
       accordion: '#f5f7fb',
       secondary: '#e6ebf5',
+      scrollDown: grey[300],
    },
    text: {
       primary: '#495057',
@@ -72,6 +74,7 @@ const dark: PaletteOptions = {
       chatPanel: '#262e35',
       accordion: '#495057',
       secondary: '#36404a',
+      scrollDown: grey[700],
    },
    text: {
       primary: '#e1e9f1',

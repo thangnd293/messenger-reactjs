@@ -7,12 +7,11 @@ import {
 } from 'react-icons/ri';
 import { IconButton, Skeleton, Stack, Typography, styled } from '@mui/material';
 import Avatar from '@/components/Avatar';
-import { Conversation } from '@/types/conversation';
+import { useChatContext } from './ChatContext';
 
-interface Props {
-   conversation?: Conversation;
-}
-const Header = ({ conversation }: Props) => {
+const Header = () => {
+   const { conversation } = useChatContext();
+
    return (
       <Stack
          direction="row"

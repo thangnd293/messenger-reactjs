@@ -1,3 +1,5 @@
+import { User } from './user.d';
+
 export enum ConversationTypeEnum {
    private = 'private',
    group = 'group',
@@ -14,4 +16,5 @@ export type Conversation = {
    avatar?: string;
    name: string;
    isOnline?: boolean;
+   members: User[];
 };

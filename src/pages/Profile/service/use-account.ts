@@ -18,6 +18,8 @@ export const useAccount = (
          },
          ...config,
          refetchOnWindowFocus: false,
+         cacheTime: 60000,
+         staleTime: Infinity,
       },
    );
 };

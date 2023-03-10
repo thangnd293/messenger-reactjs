@@ -22,7 +22,6 @@ export const useMessages = (
          refetchOnWindowFocus: false,
          cacheTime: 60000,
          staleTime: Infinity,
-         keepPreviousData: true,
       },
    );
    return {

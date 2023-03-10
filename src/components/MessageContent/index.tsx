@@ -1,5 +1,7 @@
+import dayjs from 'dayjs';
 import { ReactNode } from 'react';
-import { Box } from '@mui/material';
+import { Box, Tooltip } from '@mui/material';
+import { Message } from '@/types/message';
 import styles from './styles.module.css';
 
 enum VariantEnum {
@@ -8,25 +10,39 @@ enum VariantEnum {
    Image = 'image',
 }
 
-interface Props {
-   variant?: VariantEnum;
-   children: ReactNode;
-}
-
 const messageStyles: Record<VariantEnum, string> = {
    [VariantEnum.File]: 'message-file',
    [VariantEnum.Text]: styles.text,
    [VariantEnum.Image]: 'message-image',
 };
 
-const MessageContent = ({ variant = VariantEnum.Text, children }: Props) => {
+type Props = {
+   isSelf?: boolean;
+   variant?: VariantEnum;
+   children: ReactNode;
+} & Pick<Message, 'createdAt'>;
+
+const MessageContent = ({
+   isSelf,
+   variant = VariantEnum.Text,
+   children,
+   createdAt,
+}: Props) => {
+   const placement = isSelf ? 'left' : 'right';
+   const tooltipTitle = `${dayjs(createdAt).format('HH:mm A')}`;
+   const bgcolor = isSelf ? 'background.secondary' : 'primary.main';
+   const color = isSelf ? 'inherit' : 'white';
+
    return (
-      <Box
-         className={`message ${messageStyles[variant]}`}
-         bgcolor="primary.main"
-      >
-         {children}
-      </Box>
+      <Tooltip title={tooltipTitle} placement={placement}>
+         <Box
+            className={`message ${messageStyles[variant]}`}
+            bgcolor={bgcolor}
+            color={color}
+         >
+            {children}
+         </Box>
+      </Tooltip>
    );
 };
 

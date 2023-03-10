@@ -17,5 +17,5 @@ export function useListenHasNewMessage(callback: Callback) {
       return () => {
          socket.off(SOCKET_EVENT.NEW_MESSAGE);
       };
-   }, []);
+   }, [callback]);
 }

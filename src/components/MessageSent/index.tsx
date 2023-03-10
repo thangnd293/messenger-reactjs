@@ -1,3 +1,5 @@
+import classnames from 'classnames';
+import dayjs from 'dayjs';
 import { ReactNode } from 'react';
 import { Box, Tooltip } from '@mui/material';
 import ReceivedIcon from '@/assets/svg/Received';
@@ -9,9 +11,10 @@ import { capitalizeFirstLetter, getFullName } from '@/utils';
 import Avatar from '../Avatar';
 
 interface Props {
+   isLast?: boolean;
    isGroupMessage?: boolean;
    status: MessageStatusEnum;
-   seenBy: ActiveTime[];
+   seenBy?: ActiveTime;
    children: ReactNode;
 }
 
@@ -22,26 +25,41 @@ type IconProps = {
    name?: string;
 };
 
-const MessageSent = ({ isGroupMessage, status, seenBy, children }: Props) => {
-   const statusMessage = capitalizeFirstLetter(status);
+const MessageSent = ({
+   isLast,
+   isGroupMessage,
+   status,
+   seenBy,
+   children,
+}: Props) => {
+   let statusMessage = capitalizeFirstLetter(status);
    const IconComponent = StatusIcon[status];
 
-   let iconProps: IconProps =
-      status === MessageStatusEnum.Seen ? { width: 14, height: 14 } : {};
+   const classes = classnames('sent-status', {
+      'is-seen': seenBy,
+      'is-last': isLast,
+   });
 
-   if (status === MessageStatusEnum.Seen && !isGroupMessage) {
-      const userSeen = seenBy[0]?.user;
-      if (userSeen) {
-         iconProps.avatar = userSeen.avatar;
-         iconProps.name = getFullName(userSeen.firstName, userSeen.lastName);
-      }
+   let iconProps: IconProps = seenBy ? { width: 14, height: 14 } : {};
+
+   if (seenBy && !isGroupMessage) {
+      const { user, activeTime } = seenBy;
+      iconProps.avatar = user.avatar;
+      iconProps.name = getFullName(user.firstName, user.lastName);
+
+      statusMessage = `Seen at ${dayjs(activeTime).format('HH:mm A')}`;
    }
 
    return (
-      <Box className={`message-wrapper sent`}>
+      <Box className={'message-wrapper sent'}>
          {children}
          <Box pl="6px" />
-         <Tooltip title={statusMessage} placement="top" className="sent-status">
+         <Tooltip
+            title={statusMessage}
+            placement="left"
+            className={classes}
+            disableInteractive
+         >
             <Box component="span" display="inline-flex">
                <IconComponent {...iconProps} />
             </Box>

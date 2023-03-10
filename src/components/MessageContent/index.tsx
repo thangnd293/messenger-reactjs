@@ -4,18 +4,6 @@ import { Box, Tooltip } from '@mui/material';
 import { Message } from '@/types/message';
 import styles from './styles.module.css';
 
-enum VariantEnum {
-   File = 'file',
-   Text = 'text',
-   Image = 'image',
-}
-
-const messageStyles: Record<VariantEnum, string> = {
-   [VariantEnum.File]: 'message-file',
-   [VariantEnum.Text]: styles.text,
-   [VariantEnum.Image]: 'message-image',
-};
-
 type Props = {
    isSelf?: boolean;
    variant?: VariantEnum;
@@ -34,7 +22,7 @@ const MessageContent = ({
    const color = isSelf ? 'inherit' : 'white';
 
    return (
-      <Tooltip title={tooltipTitle} placement={placement}>
+      <Tooltip title={tooltipTitle} placement={placement} disableInteractive>
          <Box
             className={`message ${messageStyles[variant]}`}
             bgcolor={bgcolor}
@@ -47,3 +35,15 @@ const MessageContent = ({
 };
 
 export default MessageContent;
+
+enum VariantEnum {
+   File = 'file',
+   Text = 'text',
+   Image = 'image',
+}
+
+const messageStyles: Record<VariantEnum, string> = {
+   [VariantEnum.File]: 'message-file',
+   [VariantEnum.Text]: styles.text,
+   [VariantEnum.Image]: 'message-image',
+};

@@ -69,10 +69,6 @@
     border-radius: 18px 4px 18px 18px;
 }
 
-.message-wrapper.sent:not(:has(+ .message-wrapper.sent)) > .sent-status {
-    opacity: 1;
-    visibility: visible;
-}
 
 /* Default */
 .message-wrapper.sent:not(.message-wrapper.sent + .message-wrapper.sent):not(
@@ -87,7 +83,14 @@
     word-wrap: break-word;
 }
 
-.message-wrapper.sent > .sent-status {
+.message-wrapper.sent > .sent-status.is-seen {
     opacity: 0;
     visibility: hidden;
 } 
+
+.message-wrapper.sent > .sent-status.is-seen.is-last {
+    opacity: 1;
+    visibility: visible;
+} 
+
+

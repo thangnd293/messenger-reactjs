@@ -6,8 +6,16 @@ import {
    useState,
 } from 'react';
 import { useParams } from 'react-router-dom';
+import { SOCKET_EVENT } from '@/constants';
+import { SocketSingleton } from '@/socket';
 import { Conversation } from '@/types/conversation';
-import { Message, MessageWithoutId } from '@/types/message';
+import {
+   ActiveTime,
+   Message,
+   MessageStatusEnum,
+   MessageWithoutId,
+} from '@/types/message';
+import { User } from '@/types/user';
 import {
    useListenHasMessageReceived,
    useListenHasMessageSent,
@@ -61,20 +69,68 @@ export const ChatProvider = ({ children }: ChatProviderProps) => {
       setAllMessages(messagesSaved || []);
    }, [messagesSaved]);
 
-   const handleAddMessage = useCallback((message: Message) => {
-      setAllMessages((prev) => [...prev, message]);
-   }, []);
+   const handleAddMessage = useCallback(
+      (message: Message) => {
+         if (message.conversation !== conversationId) return;
 
-   const handleUpdateMessages = useCallback((callback: UpdateCallback) => {
-      setAllMessages((prev) => {
-         return prev.map(callback);
-      });
-   }, []);
+         setAllMessages((prev) => [...prev, message]);
+      },
+      [conversationId],
+   );
+
+   const handleUpdateMessages = useCallback(
+      (userId: string, callback: UpdateCallback) => {
+         const isIncludeUser = conversation?.members.find(
+            (member) => member._id.toString() === userId,
+         );
+
+         if (!isIncludeUser) return;
+
+         setAllMessages((prev) => {
+            return prev.map(callback);
+         });
+      },
+      [conversation],
+   );
 
    useListenHasMessageSent(handleAddMessage);
    useListenHasNewMessage(handleAddMessage);
    useListenHasMessageReceived(handleUpdateMessages);
 
+   useEffect(() => {
+      const { socket } = SocketSingleton.getInstance();
+
+      socket.on(
+         SOCKET_EVENT.SEEN_MESSAGE,
+         (data: { user: User; seenAt: string }) => {
+            const { user: userSeen, seenAt } = data;
+
+            const userJustSeen: ActiveTime = {
+               user: userSeen,
+               activeTime: seenAt,
+            };
+
+            setAllMessages((prev) => {
+               return prev.map((message) => {
+                  const hasBeenSeen = message.seenBy.find(
+                     (seen) => seen.user._id === userSeen._id,
+                  );
+
+                  if (hasBeenSeen) return message;
+
+                  return {
+                     ...message,
+                     seenBy: [...message.seenBy, userJustSeen],
+                     status: MessageStatusEnum.Seen,
+                  };
+               });
+            });
+         },
+      );
+      return () => {
+         socket.off(SOCKET_EVENT.SEEN_MESSAGE);
+      };
+   }, []);
    return (
       <ChatContext.Provider
          value={{

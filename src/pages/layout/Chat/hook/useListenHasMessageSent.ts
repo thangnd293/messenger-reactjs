@@ -15,5 +15,5 @@ export function useListenHasMessageSent(callback: Callback) {
       return () => {
          socket.off(SOCKET_EVENT.MESSAGE_SENT);
       };
-   }, []);
+   }, [callback]);
 }

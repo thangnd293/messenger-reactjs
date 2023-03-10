@@ -13,14 +13,22 @@ const ChatBody = () => {
    const { messages, isLoading, conversation } = useChatContext();
    const isCanRender = user && !isLoading && messages;
 
+   const lastMessageSeen = [...messages]
+      .reverse()
+      .find(
+         (message) =>
+            message.sender._id === user?._id &&
+            message.status === MessageStatusEnum.Seen,
+      );
+
    return isCanRender ? (
       <Stack p="10px">
          {messages.map((message) => {
             const isSelf = message.sender._id === user._id;
             const Message = isSelf ? MessageSent : MessageReceived;
             const isSeen = message.seenBy.length > 0;
-
-            const status = isSeen ? MessageStatusEnum.Seen : message.status;
+            const seenBy = isSeen ? message.seenBy[0] : undefined;
+            const isLast = lastMessageSeen?.idClient === message.idClient;
 
             return (
                <Message
@@ -29,8 +37,9 @@ const ChatBody = () => {
                      conversation?.type === ConversationTypeEnum.group
                   }
                   sender={message.sender}
-                  status={status}
-                  seenBy={message.seenBy}
+                  status={message.status}
+                  seenBy={seenBy}
+                  isLast={isLast}
                >
                   <MessageContent isSelf={isSelf} createdAt={message.createdAt}>
                      {message.content}

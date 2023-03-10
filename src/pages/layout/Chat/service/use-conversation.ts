@@ -1,6 +1,6 @@
 import Axios, { AxiosError } from 'axios';
 import { ResponseData } from '@/types/common';
-import { Conversation } from '@/types/conversation.d';
+import { Conversation } from '@/types/conversation';
 import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 
 export const useConversation = (

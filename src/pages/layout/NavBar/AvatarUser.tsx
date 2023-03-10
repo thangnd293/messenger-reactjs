@@ -6,7 +6,6 @@ import {
 } from 'react-icons/ri';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-   Avatar,
    AvatarProps,
    Button,
    Divider,
@@ -17,13 +16,14 @@ import {
    ListItemText,
    useMediaQuery,
 } from '@mui/material';
+import Avatar from '@/components/Avatar';
 import Popover from '@/components/Popover';
+import { useAccount } from '@/pages/Profile/service/use-account';
 import { useAuthContext } from '@/pages/auth/AuthContext';
 
-type Props = Omit<AvatarProps, 'onClick'>;
-const AvatarUser = (props: Props) => {
+const AvatarUser = () => {
+   const { data: user } = useAccount();
    const isMobile = useMediaQuery('(max-width:900px)');
-   const navigate = useNavigate();
    const { updateToken } = useAuthContext();
    const [avatarEl, setAvatarEl] = React.useState<HTMLDivElement | null>(null);
 
@@ -65,14 +65,14 @@ const AvatarUser = (props: Props) => {
    return (
       <>
          <Avatar
+            width={36}
+            height={36}
             sx={{
-               width: 36,
-               height: 36,
                border: (theme) => `3px solid ${theme.palette.border.avatar}`,
                cursor: 'pointer',
             }}
             onClick={handleClick}
-            {...props}
+            avatar={user?.avatar}
          />
          <Popover
             open={open}

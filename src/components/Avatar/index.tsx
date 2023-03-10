@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Badge, Avatar as MuiAvatar, SxProps, styled } from '@mui/material';
+import {
+   Badge,
+   Avatar as MuiAvatar,
+   SxProps,
+   Theme,
+   styled,
+} from '@mui/material';
 import { Cloudinary } from '@cloudinary/url-gen';
 import { thumbnail } from '@cloudinary/url-gen/actions/resize';
 import { FocusOn } from '@cloudinary/url-gen/qualifiers/focusOn';
@@ -12,9 +18,10 @@ interface Props {
    name?: string;
    avatar?: string;
    isOnline?: boolean;
-   sx?: SxProps;
+   sx?: SxProps<Theme>;
    width?: number;
    height?: number;
+   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const Avatar = ({
@@ -25,6 +32,7 @@ const Avatar = ({
    height = 36,
    sx,
    className,
+   onClick,
 }: Props) => {
    const [avatarSrc, setAvatarSrc] = useState<string | undefined>();
 
@@ -50,7 +58,6 @@ const Avatar = ({
    return (
       <StyledBadge
          className={className}
-         sx={sx}
          overlap="circular"
          anchorOrigin={{
             vertical: 'bottom',
@@ -58,6 +65,7 @@ const Avatar = ({
          }}
          variant="dot"
          invisible={!isOnline}
+         onClick={onClick}
       >
          <MuiAvatar
             alt={name}
@@ -65,6 +73,7 @@ const Avatar = ({
             sx={{
                width: `${width}px`,
                height: `${height}px`,
+               ...sx,
             }}
          />
       </StyledBadge>

@@ -16,7 +16,7 @@ export enum MessageTypeEnum {
 }
 
 export type ActiveTime = {
-   user: string;
+   user: User;
    activeTime: string;
 };
 

@@ -20,8 +20,6 @@ export const useMessages = (
          ...config,
          enabled: !!_id,
          refetchOnWindowFocus: false,
-         cacheTime: 60000,
-         staleTime: Infinity,
       },
    );
    return {

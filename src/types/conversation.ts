@@ -1,4 +1,5 @@
-import { User } from './user.d';
+import { Message } from './message';
+import { User } from './user';
 
 export enum ConversationTypeEnum {
    private = 'private',

@@ -3,3 +3,5 @@ export type ResponseData<T> = {
    totalCount?: number;
    count?: number;
 };
+
+export type ComponentType = (props: any) => JSX.Element;

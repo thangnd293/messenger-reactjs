@@ -2,6 +2,7 @@ import Axios from 'axios';
 import { useEffect, useRef } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Stack, useMediaQuery } from '@mui/material';
+import { UI } from '@/constants';
 import { useAuthContext } from '@/pages/auth/AuthContext';
 import { SocketSingleton } from '@/socket';
 import { useQueryClient } from '@tanstack/react-query';
@@ -11,6 +12,7 @@ import { LayoutProvider } from '../LayoutContext';
 import NavBarDesktop from '../NavBar/NavBarDesktop';
 import NavBarMobile from '../NavBar/NavBarMobile';
 
+const { NAV_BAR_WIDTH, CONTROL_PANEL_WIDTH } = UI;
 const MainLayout = () => {
    const isMobile = useMediaQuery('(max-width:900px)');
    const { pathname } = useLocation();
@@ -72,8 +74,8 @@ const MainLayout = () => {
                   bgcolor: 'background.tabPanel',
 
                   [theme.breakpoints.up('md')]: {
-                     width: 'calc(380px + 75px)',
-                     paddingLeft: '75px',
+                     width: `calc(${CONTROL_PANEL_WIDTH}px + ${NAV_BAR_WIDTH}px)`,
+                     paddingLeft: `${NAV_BAR_WIDTH}px`,
                      paddingBottom: 'unset',
                      flexShrink: 0,
                   },

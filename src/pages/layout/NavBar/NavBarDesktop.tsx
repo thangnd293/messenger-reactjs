@@ -1,6 +1,7 @@
 import { FiMoon, FiSun } from 'react-icons/fi';
 import { useLocation } from 'react-router-dom';
 import { IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import { UI } from '@/constants';
 import { useThemeContext } from '@/theme/ThemeContext';
 import AvatarUser from './AvatarUser';
 import { navs } from './const';
@@ -17,7 +18,7 @@ const NavBarDesktop = () => {
          zIndex="100"
          top={0}
          left={0}
-         width="75px"
+         width={`${UI.NAV_BAR_WIDTH}px`}
          height="100vh"
          bgcolor="background.sidebar"
          boxShadow="0 2px 4px rgb(15 34 58 / 12%)"

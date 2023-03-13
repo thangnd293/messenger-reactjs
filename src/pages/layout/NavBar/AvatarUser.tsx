@@ -4,9 +4,8 @@ import {
    RiProfileLine,
    RiSettings5Line,
 } from 'react-icons/ri';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
-   AvatarProps,
    Button,
    Divider,
    List,
@@ -14,16 +13,16 @@ import {
    ListItemButton,
    ListItemIcon,
    ListItemText,
-   useMediaQuery,
 } from '@mui/material';
 import Avatar from '@/components/Avatar';
 import Popover from '@/components/Popover';
+import { useIsMobile } from '@/hook';
 import { useAccount } from '@/pages/Profile/service/use-account';
 import { useAuthContext } from '@/pages/auth/AuthContext';
 
 const AvatarUser = () => {
    const { data: user } = useAccount();
-   const isMobile = useMediaQuery('(max-width:900px)');
+   const isMobile = useIsMobile();
    const { updateToken } = useAuthContext();
    const [avatarEl, setAvatarEl] = React.useState<HTMLDivElement | null>(null);
 

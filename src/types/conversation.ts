@@ -1,4 +1,4 @@
-import { Message } from './message';
+import { MessageWithoutId } from './message';
 import { User } from './user';
 
 export enum ConversationTypeEnum {
@@ -13,7 +13,7 @@ export type Conversation = {
       User,
       '_id' | 'firstName' | 'lastName' | 'avatar' | 'isOnline' | 'lastActive'
    >;
-   lastMessage: Message;
+   lastMessage: MessageWithoutId;
    avatar?: string;
    name: string;
    isOnline?: boolean;

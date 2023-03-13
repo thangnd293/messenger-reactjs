@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { FormEvent } from 'react';
 import {
    RiAttachmentLine,
@@ -9,6 +10,7 @@ import { IconButton, Stack, Tooltip, styled } from '@mui/material';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import { SOCKET_EVENT } from '@/constants';
+import { useConversationsContext } from '@/pages/Chats/ConversationsContext';
 import { useAccount } from '@/pages/Profile/service/use-account';
 import { SocketSingleton } from '@/socket';
 import {
@@ -24,6 +26,7 @@ const ChatFooter = () => {
    const { data: user } = useAccount();
 
    const { conversation, setMessages } = useChatContext();
+   const { setConversations } = useConversationsContext();
 
    const handleSendMessage = (
       idClient: string,
@@ -49,6 +52,21 @@ const ChatFooter = () => {
                      };
                   }
                   return message;
+               });
+            });
+
+            setConversations((prev) => {
+               return prev.map((conversation) => {
+                  if (conversation.lastMessage.idClient === idClient) {
+                     return {
+                        ...conversation,
+                        lastMessage: {
+                           ...conversation.lastMessage,
+                           status: MessageStatusEnum.Sent,
+                        },
+                     };
+                  }
+                  return conversation;
                });
             });
          },
@@ -82,8 +100,34 @@ const ChatFooter = () => {
          return [...prev, sendingMessage];
       });
 
+      updateNewConversations(sendingMessage);
+
       handleSendMessage(idClient, MessageTypeEnum.Text, message);
       target.message.value = '';
+   };
+
+   const updateNewConversations = (message: MessageWithoutId) => {
+      setConversations((prev) => {
+         return prev
+            .map((conversation) => {
+               if (conversation._id === message.conversation) {
+                  return {
+                     ...conversation,
+                     lastMessage: message,
+                  };
+               }
+               return conversation;
+            })
+            .sort((a, b) => {
+               if (
+                  dayjs(a.lastMessage.createdAt).isAfter(
+                     b.lastMessage.createdAt,
+                  )
+               )
+                  return -1;
+               return 1;
+            });
+      });
    };
 
    return (
@@ -119,6 +163,7 @@ const ChatFooter = () => {
                sx={{
                   minWidth: 'unset',
                }}
+               type="submit"
             >
                <RiSendPlane2Fill />
             </Button>

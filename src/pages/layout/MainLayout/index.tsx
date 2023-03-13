@@ -3,11 +3,11 @@ import { useEffect, useRef } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Stack, useMediaQuery } from '@mui/material';
 import { UI } from '@/constants';
+import { ConversationProvider } from '@/pages/Chats/ConversationsContext';
 import { useAuthContext } from '@/pages/auth/AuthContext';
 import { SocketSingleton } from '@/socket';
 import { useQueryClient } from '@tanstack/react-query';
-import Chat from '../Chat';
-import { ChatProvider } from '../Chat/ChatContext';
+import ChatWithProviders from '../Chat';
 import { LayoutProvider } from '../LayoutContext';
 import NavBarDesktop from '../NavBar/NavBarDesktop';
 import NavBarMobile from '../NavBar/NavBarMobile';
@@ -56,37 +56,37 @@ const MainLayout = () => {
 
    return (
       <LayoutProvider>
-         <Box
-            width="100%"
-            sx={(theme) => ({
-               [theme.breakpoints.up('md')]: {
-                  display: 'flex',
-               },
-            })}
-         >
-            {isMobile ? <NavBarMobile /> : <NavBarDesktop />}
-            <Stack
+         <ConversationProvider>
+            <Box
+               width="100%"
                sx={(theme) => ({
-                  width: '100%',
-                  height: '100vh',
-                  overflowY: 'auto',
-                  paddingBottom: '58px',
-                  bgcolor: 'background.tabPanel',
-
                   [theme.breakpoints.up('md')]: {
-                     width: `calc(${CONTROL_PANEL_WIDTH}px + ${NAV_BAR_WIDTH}px)`,
-                     paddingLeft: `${NAV_BAR_WIDTH}px`,
-                     paddingBottom: 'unset',
-                     flexShrink: 0,
+                     display: 'flex',
                   },
                })}
             >
-               <Outlet />
-            </Stack>
-            <ChatProvider>
-               <Chat />
-            </ChatProvider>
-         </Box>
+               {isMobile ? <NavBarMobile /> : <NavBarDesktop />}
+               <Stack
+                  sx={(theme) => ({
+                     width: '100%',
+                     height: '100vh',
+                     overflowY: 'auto',
+                     paddingBottom: '58px',
+                     bgcolor: 'background.tabPanel',
+
+                     [theme.breakpoints.up('md')]: {
+                        width: `calc(${CONTROL_PANEL_WIDTH}px + ${NAV_BAR_WIDTH}px)`,
+                        paddingLeft: `${NAV_BAR_WIDTH}px`,
+                        paddingBottom: 'unset',
+                        flexShrink: 0,
+                     },
+                  })}
+               >
+                  <Outlet />
+               </Stack>
+               <ChatWithProviders />
+            </Box>
+         </ConversationProvider>
       </LayoutProvider>
    );
 };

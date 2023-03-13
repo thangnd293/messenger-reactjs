@@ -11,12 +11,18 @@ interface Props {
    conversation: ConversationType;
    active?: boolean;
 }
+
 const Conversation = ({ conversation, active }: Props) => {
    const { data: user } = useAccount();
    const { name, lastMessage } = conversation;
 
    const timestamp = getFromNow(lastMessage.createdAt);
-   const isSeen = lastMessage.seenBy.includes(user?._id);
+   const isSeen = lastMessage.seenBy.find(
+      ({ user: userSeen }) => user?._id === userSeen.toString(),
+   );
+
+   const isSelf = lastMessage.sender._id === user?._id;
+   const content = isSelf ? `You: ${lastMessage.content}` : lastMessage.content;
 
    return (
       <Stack
@@ -39,8 +45,10 @@ const Conversation = ({ conversation, active }: Props) => {
          <Stack>
             <Typography variant="smallTextBold">{name}</Typography>
             <Typography component="p">
-               <Typography variant={isSeen ? 'smallText' : 'smallTextBold'}>
-                  {truncateString(lastMessage.content, 18)}
+               <Typography
+                  variant={isSelf || isSeen ? 'smallText' : 'smallTextBold'}
+               >
+                  {truncateString(content, 18)}
                </Typography>
                <Typography variant="smallText" component="span">
                   {' '}
@@ -51,15 +59,29 @@ const Conversation = ({ conversation, active }: Props) => {
                </Typography>
             </Typography>
          </Stack>
-         {!isSeen && (
-            <Box
-               ml="auto"
-               width="12px"
-               height="12px"
-               borderRadius="50%"
-               bgcolor="primary.main"
-            />
-         )}
+         <Stack
+            ml="auto"
+            direction="row"
+            alignItems="center"
+            alignSelf="stretch"
+         >
+            <Typography
+               variant="smallText"
+               component="span"
+               alignSelf="flex-end"
+               pr="10px"
+            >
+               {lastMessage.status}
+            </Typography>
+            {!isSeen && !isSelf && (
+               <Box
+                  width="12px"
+                  height="12px"
+                  borderRadius="50%"
+                  bgcolor="primary.main"
+               />
+            )}
+         </Stack>
       </Stack>
    );
 };

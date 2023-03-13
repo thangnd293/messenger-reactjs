@@ -5,4 +5,5 @@ export const SOCKET_EVENT = {
    SEND_MESSAGE: 'send-message',
    READ_MESSAGE: 'read-message',
    SEEN_MESSAGE: 'seen-message',
+   NEW_CONVERSATION: 'new-conversation',
 };

@@ -1,21 +1,28 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { RiSearchLine } from 'react-icons/ri';
 import { useParams } from 'react-router-dom';
 import { Box, InputAdornment, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
 import Input from '@/components/Input';
+import { SocketSingleton } from '@/socket';
 import Conversation from './Conversation';
+import { useConversationsContext } from './ConversationsContext';
 import SearchUser from './SearchUser';
-import { useConversations } from './service/use-conversations';
 
-const Chats = () => {
-   const { data: conversations } = useConversations();
+const ChatsPage = () => {
    const { conversationId } = useParams();
+
    const [isShowSearchUser, setIsShowSearchUser] = useState(false);
+
+   const { conversations } = useConversationsContext();
 
    const onCloseSearchUser = () => {
       setIsShowSearchUser(false);
    };
+
+   useEffect(() => {
+      const { socket } = SocketSingleton.getInstance();
+   }, []);
 
    return (
       <Fragment>
@@ -44,7 +51,7 @@ const Chats = () => {
 
                <Box pb="24px" flex="1" overflow="auto">
                   <Stack mx="8px" spacing="2px">
-                     {conversations?.data.map((conversation) => (
+                     {conversations.map((conversation) => (
                         <Conversation
                            key={conversation._id}
                            conversation={conversation}
@@ -59,4 +66,4 @@ const Chats = () => {
    );
 };
 
-export default Chats;
+export default ChatsPage;

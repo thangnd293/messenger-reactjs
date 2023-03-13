@@ -1,4 +1,4 @@
-export type Connection = {
+type Connection = {
    _id: string;
    user: Pick<
       User,

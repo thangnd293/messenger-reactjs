@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 import { ReactNode } from 'react';
-import { Box, Tooltip } from '@mui/material';
+import { Box } from '@mui/material';
 import { Message } from '@/types/message';
+import Tooltip from '../Tooltip';
 import styles from './styles.module.css';
 
 type Props = {
@@ -22,7 +23,7 @@ const MessageContent = ({
    const color = isSelf ? 'inherit' : 'white';
 
    return (
-      <Tooltip title={tooltipTitle} placement={placement} disableInteractive>
+      <Tooltip title={tooltipTitle} placement={placement}>
          <Box
             className={`message ${messageStyles[variant]}`}
             bgcolor={bgcolor}

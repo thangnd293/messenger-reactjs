@@ -1,6 +1,7 @@
 import { FiMoon, FiSun } from 'react-icons/fi';
 import { useLocation } from 'react-router-dom';
-import { IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import { IconButton, Stack, Typography } from '@mui/material';
+import Tooltip from '@/components/Tooltip';
 import { UI } from '@/constants';
 import { useThemeContext } from '@/theme/ThemeContext';
 import AvatarUser from './AvatarUser';
@@ -29,12 +30,7 @@ const NavBarDesktop = () => {
          <Stack width="100%" alignItems="center" px="8px" gap="14px">
             {navs.map((nav) => {
                return (
-                  <Tooltip
-                     key={nav.name}
-                     title={nav.name}
-                     placement="top"
-                     disableInteractive
-                  >
+                  <Tooltip key={nav.name} title={nav.name} placement="top">
                      <LinkButton
                         to={nav.to}
                         active={pathname.startsWith(nav.to).toString()}

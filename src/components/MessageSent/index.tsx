@@ -1,14 +1,14 @@
 import classnames from 'classnames';
 import dayjs from 'dayjs';
 import { ReactNode } from 'react';
-import { Box, Tooltip } from '@mui/material';
+import { Box } from '@mui/material';
 import ReceivedIcon from '@/assets/svg/Received';
 import SendingIcon from '@/assets/svg/Sending';
 import SentIcon from '@/assets/svg/Sent';
-import { ComponentType } from '@/types/common';
 import { ActiveTime, MessageStatusEnum } from '@/types/message';
 import { capitalizeFirstLetter, getFullName } from '@/utils';
 import Avatar from '../Avatar';
+import Tooltip from '../Tooltip';
 
 interface Props {
    isLast?: boolean;
@@ -54,12 +54,7 @@ const MessageSent = ({
       <Box className={'message-wrapper sent'}>
          {children}
          <Box pl="6px" />
-         <Tooltip
-            title={statusMessage}
-            placement="left"
-            className={classes}
-            disableInteractive
-         >
+         <Tooltip title={statusMessage} placement="left" className={classes}>
             <Box component="span" display="inline-flex">
                <IconComponent {...iconProps} />
             </Box>

@@ -24,7 +24,7 @@ const ChatFooter = () => {
    const { data: user } = useAccount();
 
    const { conversation, updateMessage, addMessage } = useChatContext();
-   const { updateConversations, updateConversation } =
+   const { updateConversations, updateStatusConversation } =
       useConversationsContext();
 
    const { socket } = SocketSingleton.getInstance();
@@ -45,7 +45,9 @@ const ChatFooter = () => {
          },
          (idClient: string) => {
             updateMessage(idClient, MessageStatusEnum.Sent);
-            updateConversation(idClient, { status: MessageStatusEnum.Sent });
+            updateStatusConversation(idClient, {
+               status: MessageStatusEnum.Sent,
+            });
          },
       );
    };

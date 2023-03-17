@@ -17,7 +17,7 @@ import { getFromNow } from '@/utils/getFromNow';
 import { useAccount } from '../Profile/service/use-account';
 
 type MessageStatus = (typeof MessageStatusEnum)[keyof typeof MessageStatusEnum];
-type ConversationStatusType = MessageStatus | 'notSeen';
+type ConversationStatusType = MessageStatus | 'yoursNotSeen' | 'yoursSeen';
 
 interface Props {
    conversation: ConversationType;
@@ -34,7 +34,15 @@ const Conversation = ({ conversation, active }: Props) => {
    const isSelf = lastMessage.sender._id === user?._id;
    const content = isSelf ? `You: ${lastMessage.content}` : lastMessage.content;
 
-   const status = isSelf ? lastMessage.status : isSeen ? 'seen' : 'notSeen';
+   const getStatusOfConversation = () => {
+      return isSelf
+         ? lastMessage.status
+         : isSeen
+         ? 'yoursSeen'
+         : 'yoursNotSeen';
+   };
+
+   const status = getStatusOfConversation();
 
    const { avatar, fullName, isOnline } = getDataFromConversation(
       conversation,
@@ -99,7 +107,7 @@ const conversationStatus = (
    [MessageStatusEnum.Seen]: <Avatar width={14} height={14} avatar={avatar} />,
    [MessageStatusEnum.Received]: <ReceivedIcon />,
    [MessageStatusEnum.Sending]: <SendingIcon />,
-   notSeen: (
+   yoursNotSeen: (
       <Box
          width="14px"
          height="14px"
@@ -107,4 +115,5 @@ const conversationStatus = (
          bgcolor="primary.main"
       />
    ),
+   yoursSeen: null,
 });

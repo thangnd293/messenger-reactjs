@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import { SOCKET_EVENT } from '@/constants';
 import { useAccount } from '@/pages/Profile/service/use-account';
 import { SocketSingleton } from '@/socket';
-import { MessageStatusEnum, MessageWithoutId } from '@/types/message';
+import { MessageWithoutId } from '@/types/message';
 import { useLayoutContext } from '../../LayoutContext';
 import { useChatContext } from '../ChatContext';
 
 export function useDetectUserReadMessages(
    isShowScrollDown: boolean,
-   updateConversation: (
+   updateStatusConversation: (
       idClient: string,
       options: Partial<MessageWithoutId>,
    ) => void,
@@ -43,15 +43,15 @@ export function useDetectUserReadMessages(
             members.map((member) => member._id),
          );
 
-         updateConversation(lastMessageReceived.idClient, {
-            status: MessageStatusEnum.Seen,
-            seenBy: [
-               {
-                  user,
-                  activeTime: new Date().toISOString(),
-               },
-            ],
-         });
+         // updateStatusConversation(lastMessageReceived.idClient, {
+         //    status: MessageStatusEnum.Seen,
+         //    seenBy: [
+         //       {
+         //          user,
+         //          activeTime: new Date().toISOString(),
+         //       },
+         //    ],
+         // });
 
          return () => {
             socket.off(SOCKET_EVENT.READ_MESSAGE);
@@ -63,6 +63,6 @@ export function useDetectUserReadMessages(
       messages,
       user,
       conversation,
-      updateConversation,
+      updateStatusConversation,
    ]);
 }

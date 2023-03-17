@@ -18,8 +18,12 @@ import { useConversations } from './service/use-conversations';
 interface ConversationsContextValue {
    conversations: Conversation[];
    updateConversations: (conversation: Conversation) => void;
-   updateConversation: (
+   updateStatusConversation: (
       idClient: string,
+      options: Partial<MessageWithoutId>,
+   ) => void;
+   updateStatusConversations: (
+      idClients: string[],
       options: Partial<MessageWithoutId>,
    ) => void;
 }
@@ -27,7 +31,8 @@ interface ConversationsContextValue {
 const conversationsContextValue: ConversationsContextValue = {
    conversations: [],
    updateConversations: () => {},
-   updateConversation: () => {},
+   updateStatusConversation: () => {},
+   updateStatusConversations: () => {},
 };
 
 export const ConversationsContext = createContext<ConversationsContextValue>(
@@ -88,7 +93,7 @@ export const ConversationProvider: FC<React.PropsWithChildren<unknown>> = ({
       [checkConversationExists, addConversation],
    );
 
-   const updateConversation = useCallback(
+   const updateStatusConversation = useCallback(
       (idClient: string, options: Partial<MessageWithoutId>) => {
          setCurrentConversations((prev) => {
             return prev.map((conversation) => {
@@ -108,15 +113,40 @@ export const ConversationProvider: FC<React.PropsWithChildren<unknown>> = ({
       [],
    );
 
+   const updateStatusConversations = useCallback(
+      (idClients: string[], options: Partial<MessageWithoutId>) => {
+         setCurrentConversations((prev) => {
+            return prev.map((conversation) => {
+               const { lastMessage } = conversation;
+               if (idClients.includes(lastMessage.idClient)) {
+                  return {
+                     ...conversation,
+                     lastMessage: {
+                        ...lastMessage,
+                        ...options,
+                     },
+                  };
+               }
+               return conversation;
+            });
+         });
+      },
+      [],
+   );
+
    useListenConversationChangeWhenHasNewMessage(updateConversations);
-   useListenConversationChangeWhenHasUpdateMessage(updateConversation);
+   useListenConversationChangeWhenHasUpdateMessage(
+      updateStatusConversation,
+      updateStatusConversations,
+   );
 
    return (
       <ConversationsContext.Provider
          value={{
             conversations: currentConversations,
             updateConversations,
-            updateConversation,
+            updateStatusConversation,
+            updateStatusConversations,
          }}
       >
          {children}

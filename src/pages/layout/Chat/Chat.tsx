@@ -33,12 +33,12 @@ const Chat = () => {
    const isMobile = useIsMobile();
 
    const { isLoading, conversation } = useChatContext();
-   const { updateConversation } = useConversationsContext();
+   const { updateStatusConversation } = useConversationsContext();
 
    const { isShowScrollDown, hiddenScrollDown, showScrollDown } =
       useShowScrollDown(messagesContainerRef);
 
-   useDetectUserReadMessages(isShowScrollDown, updateConversation);
+   useDetectUserReadMessages(isShowScrollDown, updateStatusConversation);
 
    const Wrapper = isMobile ? Drawer : Box;
 

@@ -1,11 +1,23 @@
+import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
+import ReceivedIcon from '@/assets/svg/Received';
+import SendingIcon from '@/assets/svg/Sending';
+import SentIcon from '@/assets/svg/Sent';
 import Avatar from '@/components/Avatar';
 import { Conversation as ConversationType } from '@/types/conversation';
-import { truncateString } from '@/utils';
+import { MessageStatusEnum } from '@/types/message';
+import {
+   checkUserSeen,
+   getDataFromConversation,
+   truncateString,
+} from '@/utils';
 import { getFromNow } from '@/utils/getFromNow';
 import { useAccount } from '../Profile/service/use-account';
+
+type MessageStatus = (typeof MessageStatusEnum)[keyof typeof MessageStatusEnum];
+type ConversationStatusType = MessageStatus | 'notSeen';
 
 interface Props {
    conversation: ConversationType;
@@ -14,15 +26,22 @@ interface Props {
 
 const Conversation = ({ conversation, active }: Props) => {
    const { data: user } = useAccount();
-   const { name, lastMessage } = conversation;
+   const { lastMessage } = conversation;
 
    const timestamp = getFromNow(lastMessage.createdAt);
-   const isSeen = lastMessage.seenBy.find(
-      ({ user: userSeen }) => user?._id === userSeen.toString(),
-   );
+   const isSeen = checkUserSeen(lastMessage.seenBy, user);
 
    const isSelf = lastMessage.sender._id === user?._id;
    const content = isSelf ? `You: ${lastMessage.content}` : lastMessage.content;
+
+   const status = isSelf ? lastMessage.status : isSeen ? 'seen' : 'notSeen';
+
+   const { avatar, fullName, isOnline } = getDataFromConversation(
+      conversation,
+      user,
+   );
+
+   const ConversationStatus = conversationStatus(avatar);
 
    return (
       <Stack
@@ -41,9 +60,9 @@ const Conversation = ({ conversation, active }: Props) => {
             },
          }}
       >
-         <Avatar {...conversation} />
+         <Avatar avatar={avatar} name={fullName} isOnline={isOnline} />
          <Stack>
-            <Typography variant="smallTextBold">{name}</Typography>
+            <Typography variant="smallTextBold">{fullName}</Typography>
             <Typography component="p">
                <Typography
                   variant={isSelf || isSeen ? 'smallText' : 'smallTextBold'}
@@ -65,25 +84,27 @@ const Conversation = ({ conversation, active }: Props) => {
             alignItems="center"
             alignSelf="stretch"
          >
-            <Typography
-               variant="smallText"
-               component="span"
-               alignSelf="flex-end"
-               pr="10px"
-            >
-               {lastMessage.status}
-            </Typography>
-            {!isSeen && !isSelf && (
-               <Box
-                  width="12px"
-                  height="12px"
-                  borderRadius="50%"
-                  bgcolor="primary.main"
-               />
-            )}
+            {ConversationStatus[status]}
          </Stack>
       </Stack>
    );
 };
 
 export default Conversation;
+
+const conversationStatus = (
+   avatar?: string,
+): Record<ConversationStatusType, ReactNode> => ({
+   [MessageStatusEnum.Sent]: <SentIcon />,
+   [MessageStatusEnum.Seen]: <Avatar width={14} height={14} avatar={avatar} />,
+   [MessageStatusEnum.Received]: <ReceivedIcon />,
+   [MessageStatusEnum.Sending]: <SendingIcon />,
+   notSeen: (
+      <Box
+         width="14px"
+         height="14px"
+         borderRadius="50%"
+         bgcolor="primary.main"
+      />
+   ),
+});

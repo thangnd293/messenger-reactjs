@@ -7,7 +7,7 @@ import {
 } from 'react';
 import { useParams } from 'react-router-dom';
 import { Conversation } from '@/types/conversation';
-import { Message, MessageWithoutId } from '@/types/message';
+import { Message, MessageStatusEnum, MessageWithoutId } from '@/types/message';
 import {
    useListenHasMessageReceived,
    useListenHasMessageSent,
@@ -22,13 +22,15 @@ interface ChatValue {
    conversation?: Conversation;
    messages: MessageWithoutId[];
    isLoading: boolean;
-   setMessages: SetValue<MessageWithoutId[]>;
+   addMessage: (message: MessageWithoutId) => void;
+   updateMessage: (idClient: string, status: MessageStatusEnum) => void;
 }
 
 const defaultChatValue: ChatValue = {
    messages: [],
    isLoading: false,
-   setMessages: () => {},
+   addMessage: () => {},
+   updateMessage: () => {},
 };
 
 const ChatContext = createContext<ChatValue>(defaultChatValue);
@@ -84,13 +86,35 @@ export const ChatProvider = ({ children }: ChatProviderProps) => {
    useListenHasMessageReceived(handleUpdateMessages);
    useListenHasMessageSeen(handleUpdateMessages);
 
+   const addMessage = useCallback((message: MessageWithoutId) => {
+      return setCurrentMessages((prev) => [...prev, message]);
+   }, []);
+
+   const updateMessage = useCallback(
+      (idClient: string, status: MessageStatusEnum) => {
+         setCurrentMessages((prev) => {
+            return prev.map((message) => {
+               if (message.idClient === idClient) {
+                  return {
+                     ...message,
+                     status,
+                  };
+               }
+               return message;
+            });
+         });
+      },
+      [],
+   );
+
    return (
       <ChatContext.Provider
          value={{
             conversation,
             messages: currentMessages,
             isLoading: conversationStates.isLoading || messagesStates.isLoading,
-            setMessages: setCurrentMessages,
+            addMessage,
+            updateMessage,
          }}
       >
          {children}

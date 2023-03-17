@@ -10,7 +10,6 @@ export function useListenHasNewMessage(callback: Callback) {
       const { socket } = SocketSingleton.getInstance();
       socket.on(SOCKET_EVENT.NEW_MESSAGE, (message: Message) => {
          callback(message);
-
          socket.emit(SOCKET_EVENT.MESSAGE_RECEIVED, message);
       });
 

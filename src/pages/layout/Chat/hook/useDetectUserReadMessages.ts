@@ -2,10 +2,17 @@ import { useEffect } from 'react';
 import { SOCKET_EVENT } from '@/constants';
 import { useAccount } from '@/pages/Profile/service/use-account';
 import { SocketSingleton } from '@/socket';
+import { MessageStatusEnum, MessageWithoutId } from '@/types/message';
 import { useLayoutContext } from '../../LayoutContext';
 import { useChatContext } from '../ChatContext';
 
-export function useDetectUserReadMessages(isShowScrollDown: boolean) {
+export function useDetectUserReadMessages(
+   isShowScrollDown: boolean,
+   updateConversation: (
+      idClient: string,
+      options: Partial<MessageWithoutId>,
+   ) => void,
+) {
    const { data: user } = useAccount();
    const { conversation, messages } = useChatContext();
    const { isFocusApp } = useLayoutContext();
@@ -36,9 +43,26 @@ export function useDetectUserReadMessages(isShowScrollDown: boolean) {
             members.map((member) => member._id),
          );
 
+         updateConversation(lastMessageReceived.idClient, {
+            status: MessageStatusEnum.Seen,
+            seenBy: [
+               {
+                  user,
+                  activeTime: new Date().toISOString(),
+               },
+            ],
+         });
+
          return () => {
             socket.off(SOCKET_EVENT.READ_MESSAGE);
          };
       }
-   }, [isFocusApp, isShowScrollDown, messages, user, conversation]);
+   }, [
+      isFocusApp,
+      isShowScrollDown,
+      messages,
+      user,
+      conversation,
+      updateConversation,
+   ]);
 }

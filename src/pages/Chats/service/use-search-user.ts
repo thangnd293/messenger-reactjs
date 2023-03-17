@@ -1,5 +1,4 @@
 import Axios, { AxiosError } from 'axios';
-import { ResponseData } from '@/types/common';
 import { User } from '@/types/user';
 import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 

@@ -7,10 +7,20 @@ import {
 } from 'react-icons/ri';
 import { IconButton, Skeleton, Stack, Typography, styled } from '@mui/material';
 import Avatar from '@/components/Avatar';
+import { useAccount } from '@/pages/Profile/service/use-account';
+import { getDataFromConversation, getFullName } from '@/utils';
 import { useChatContext } from './ChatContext';
 
 const Header = () => {
+   const { data: user } = useAccount();
+
    const { conversation } = useChatContext();
+   if (!conversation) return null;
+
+   const { fullName, isOnline, avatar } = getDataFromConversation(
+      conversation,
+      user,
+   );
 
    return (
       <Stack
@@ -24,14 +34,8 @@ const Header = () => {
          <Stack direction="row" alignItems="center" spacing="16px">
             {conversation ? (
                <>
-                  <Avatar
-                     name={conversation.name}
-                     avatar={conversation.avatar}
-                     isOnline={conversation.isOnline}
-                  />
-                  <Typography variant="smallTextBold">
-                     {conversation.name}
-                  </Typography>
+                  <Avatar name={fullName} avatar={avatar} isOnline={isOnline} />
+                  <Typography variant="smallTextBold">{fullName}</Typography>
                </>
             ) : (
                <>

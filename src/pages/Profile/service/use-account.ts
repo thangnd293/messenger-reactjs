@@ -5,11 +5,16 @@ import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 const accountKey = ['account', 'me'];
 
 export const useAccount = (
-   config: UseQueryOptions<User, AxiosError, User, typeof accountKey> = {},
+   config: UseQueryOptions<
+      ResponseData<User>,
+      AxiosError,
+      ResponseData<User>,
+      typeof accountKey
+   > = {},
 ) => {
-   return useQuery(
+   const { data, ...rest } = useQuery(
       accountKey,
-      (): Promise<User> => Axios.get('/users/me').then((res) => res.data),
+      () => Axios.get('/users/me'),
       {
          onSuccess: (data) => {
             if (config?.onSuccess) {
@@ -22,4 +27,6 @@ export const useAccount = (
          staleTime: Infinity,
       },
    );
+
+   return { data: data?.data, ...rest };
 };

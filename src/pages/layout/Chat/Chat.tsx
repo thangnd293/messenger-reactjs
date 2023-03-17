@@ -12,6 +12,7 @@ import {
 import { Stack } from '@mui/system';
 import { UI } from '@/constants';
 import { useIsMobile } from '@/hook';
+import { useConversationsContext } from '@/pages/Chats/ConversationsContext';
 import ChatBody from './ChatBody';
 import { useChatContext } from './ChatContext';
 import ChatFooter from './ChatFooter';
@@ -32,11 +33,12 @@ const Chat = () => {
    const isMobile = useIsMobile();
 
    const { isLoading, conversation } = useChatContext();
+   const { updateConversation } = useConversationsContext();
 
    const { isShowScrollDown, hiddenScrollDown, showScrollDown } =
       useShowScrollDown(messagesContainerRef);
 
-   useDetectUserReadMessages(isShowScrollDown);
+   useDetectUserReadMessages(isShowScrollDown, updateConversation);
 
    const Wrapper = isMobile ? Drawer : Box;
 
@@ -71,7 +73,6 @@ const Chat = () => {
    };
 
    const props = isMobile ? drawerProps : boxProps;
-
    const isFound = !isLoading && conversation;
 
    const handleScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {

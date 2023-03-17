@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { FormEvent } from 'react';
 import {
    RiAttachmentLine,
@@ -6,9 +5,10 @@ import {
    RiSendPlane2Fill,
 } from 'react-icons/ri';
 import { v4 as uuidv4 } from 'uuid';
-import { IconButton, Stack, Tooltip, styled } from '@mui/material';
+import { IconButton, Stack, styled } from '@mui/material';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
+import Tooltip from '@/components/Tooltip';
 import { SOCKET_EVENT } from '@/constants';
 import { useConversationsContext } from '@/pages/Chats/ConversationsContext';
 import { useAccount } from '@/pages/Profile/service/use-account';
@@ -21,12 +21,13 @@ import {
 import { useChatContext } from './ChatContext';
 
 const ChatFooter = () => {
-   const { socket } = SocketSingleton.getInstance();
-
    const { data: user } = useAccount();
 
-   const { conversation, setMessages } = useChatContext();
-   const { setConversations } = useConversationsContext();
+   const { conversation, updateMessage, addMessage } = useChatContext();
+   const { updateConversations, updateConversation } =
+      useConversationsContext();
+
+   const { socket } = SocketSingleton.getInstance();
 
    const handleSendMessage = (
       idClient: string,
@@ -43,32 +44,8 @@ const ChatFooter = () => {
             sendAt: new Date().toString(),
          },
          (idClient: string) => {
-            setMessages((prev) => {
-               return prev.map((message) => {
-                  if (message.idClient === idClient) {
-                     return {
-                        ...message,
-                        status: MessageStatusEnum.Sent,
-                     };
-                  }
-                  return message;
-               });
-            });
-
-            setConversations((prev) => {
-               return prev.map((conversation) => {
-                  if (conversation.lastMessage.idClient === idClient) {
-                     return {
-                        ...conversation,
-                        lastMessage: {
-                           ...conversation.lastMessage,
-                           status: MessageStatusEnum.Sent,
-                        },
-                     };
-                  }
-                  return conversation;
-               });
-            });
+            updateMessage(idClient, MessageStatusEnum.Sent);
+            updateConversation(idClient, { status: MessageStatusEnum.Sent });
          },
       );
    };
@@ -96,38 +73,24 @@ const ChatFooter = () => {
          sentAt: new Date().toString(),
       };
 
-      setMessages((prev) => {
-         return [...prev, sendingMessage];
-      });
+      addMessage(sendingMessage);
 
       updateNewConversations(sendingMessage);
 
       handleSendMessage(idClient, MessageTypeEnum.Text, message);
+
       target.message.value = '';
    };
 
    const updateNewConversations = (message: MessageWithoutId) => {
-      setConversations((prev) => {
-         return prev
-            .map((conversation) => {
-               if (conversation._id === message.conversation) {
-                  return {
-                     ...conversation,
-                     lastMessage: message,
-                  };
-               }
-               return conversation;
-            })
-            .sort((a, b) => {
-               if (
-                  dayjs(a.lastMessage.createdAt).isAfter(
-                     b.lastMessage.createdAt,
-                  )
-               )
-                  return -1;
-               return 1;
-            });
-      });
+      if (!conversation) return;
+
+      const newConversation = {
+         ...conversation,
+         lastMessage: message,
+      };
+
+      updateConversations(newConversation);
    };
 
    return (
@@ -148,12 +111,12 @@ const ChatFooter = () => {
             autoComplete="off"
          />
          <Stack direction="row" spacing="8px" flexShrink={0}>
-            <Tooltip placement="top" title={'Emoji'} disableInteractive>
+            <Tooltip placement="top" title={'Emoji'}>
                <IconButtonStyled>
                   <RiEmotionHappyLine />
                </IconButtonStyled>
             </Tooltip>
-            <Tooltip placement="top" title={'Attached File'} disableInteractive>
+            <Tooltip placement="top" title={'Attached File'}>
                <IconButtonStyled>
                   <RiAttachmentLine />
                </IconButtonStyled>

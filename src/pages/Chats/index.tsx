@@ -1,10 +1,9 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { RiSearchLine } from 'react-icons/ri';
 import { useParams } from 'react-router-dom';
 import { Box, InputAdornment, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
 import Input from '@/components/Input';
-import { SocketSingleton } from '@/socket';
 import Conversation from './Conversation';
 import { useConversationsContext } from './ConversationsContext';
 import SearchUser from './SearchUser';
@@ -19,10 +18,6 @@ const ChatsPage = () => {
    const onCloseSearchUser = () => {
       setIsShowSearchUser(false);
    };
-
-   useEffect(() => {
-      const { socket } = SocketSingleton.getInstance();
-   }, []);
 
    return (
       <Fragment>

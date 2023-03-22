@@ -1,5 +1,4 @@
 import Axios, { AxiosError } from 'axios';
-import { ResponseData } from '@/types/common';
 import { Message } from '@/types/message';
 import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 
@@ -19,7 +18,6 @@ export const useMessages = (
       {
          ...config,
          enabled: !!_id,
-         refetchOnWindowFocus: false,
       },
    );
    return {

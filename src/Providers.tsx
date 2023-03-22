@@ -6,7 +6,15 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './pages/auth/AuthContext';
 import { ThemeProvider } from './theme/ThemeContext';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+   defaultOptions: {
+      queries: {
+         staleTime: Infinity,
+         cacheTime: Infinity,
+         refetchOnWindowFocus: false,
+      },
+   },
+});
 
 const Providers: FC<React.PropsWithChildren<unknown>> = ({ children }) => (
    <ThemeProvider>

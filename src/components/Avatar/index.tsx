@@ -94,6 +94,7 @@ const Avatar = ({
             sx={{
                width: `${width}px`,
                height: `${height}px`,
+               border: (theme) => '1px solid' + theme.palette.divider,
                ...sx,
             }}
          />

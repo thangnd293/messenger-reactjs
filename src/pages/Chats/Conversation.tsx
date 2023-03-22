@@ -11,9 +11,9 @@ import { MessageStatusEnum } from '@/types/message';
 import {
    checkUserSeen,
    getDataFromConversation,
+   getFromNow,
    truncateString,
 } from '@/utils';
-import { getFromNow } from '@/utils/getFromNow';
 import { useAccount } from '../Profile/service/use-account';
 
 type MessageStatus = (typeof MessageStatusEnum)[keyof typeof MessageStatusEnum];

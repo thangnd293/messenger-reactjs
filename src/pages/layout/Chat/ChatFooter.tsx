@@ -101,6 +101,9 @@ const ChatFooter = () => {
             placeholder="Enter message"
             fullWidth
             autoComplete="off"
+            multiline
+            maxRows={6}
+            minRows={1}
          />
          <Stack direction="row" spacing="8px" flexShrink={0}>
             <Tooltip placement="top" title={'Emoji'}>

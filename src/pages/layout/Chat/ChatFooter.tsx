@@ -23,9 +23,8 @@ import { useChatContext } from './ChatContext';
 const ChatFooter = () => {
    const { data: user } = useAccount();
 
-   const { conversation, updateMessage, addMessage } = useChatContext();
-   const { updateConversations, updateStatusConversation } =
-      useConversationsContext();
+   const { conversation, addMessage } = useChatContext();
+   const { updateConversations } = useConversationsContext();
 
    const { socket } = SocketSingleton.getInstance();
 
@@ -34,22 +33,13 @@ const ChatFooter = () => {
       type: MessageTypeEnum,
       content: string,
    ) => {
-      socket.emit(
-         SOCKET_EVENT.SEND_MESSAGE,
-         {
-            idClient,
-            content,
-            type,
-            conversation: conversation?._id,
-            sendAt: new Date().toString(),
-         },
-         (idClient: string) => {
-            updateMessage(idClient, MessageStatusEnum.Sent);
-            updateStatusConversation(idClient, {
-               status: MessageStatusEnum.Sent,
-            });
-         },
-      );
+      socket.emit(SOCKET_EVENT.SEND_MESSAGE, {
+         idClient,
+         content,
+         type,
+         conversation: conversation?._id,
+         sendAt: new Date().toString(),
+      });
    };
 
    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

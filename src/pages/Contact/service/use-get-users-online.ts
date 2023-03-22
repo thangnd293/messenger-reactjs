@@ -1,7 +1,13 @@
 import Axios, { AxiosError } from 'axios';
-import { ResponseData } from '@/types/common';
+import { useEffect } from 'react';
+import { SOCKET_EVENT } from '@/constants';
+import { SocketSingleton } from '@/socket';
 import { User } from '@/types/user';
-import { UseQueryOptions, useQuery } from '@tanstack/react-query';
+import {
+   UseQueryOptions,
+   useQuery,
+   useQueryClient,
+} from '@tanstack/react-query';
 
 type FriendOnline = {
    _id: string;
@@ -24,5 +30,27 @@ export const useContactsOnline = (
          ...config,
       },
    );
+
+   const queryClient = useQueryClient();
+
+   useEffect(() => {
+      const { socket } = SocketSingleton.getInstance();
+
+      const invalidateContactsOnline = () => {
+         queryClient.invalidateQueries({
+            queryKey: contactsOnlineKey,
+         });
+      };
+
+      socket.on(SOCKET_EVENT.UPDATE_STATUS_ONLINE, invalidateContactsOnline);
+
+      return () => {
+         socket.off(
+            SOCKET_EVENT.UPDATE_STATUS_ONLINE,
+            invalidateContactsOnline,
+         );
+      };
+   }, [queryClient]);
+
    return { data: data?.data, totalCount: data?.totalCount, ...rest };
 };

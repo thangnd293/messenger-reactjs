@@ -13,6 +13,7 @@ import {
    useListenConversationChangeWhenHasNewMessage,
    useListenConversationChangeWhenHasUpdateMessage,
 } from './hook';
+import { useListenChangeUserStatus } from './service';
 import { useConversations } from './service/use-conversations';
 
 interface ConversationsContextValue {
@@ -139,6 +140,7 @@ export const ConversationProvider: FC<React.PropsWithChildren<unknown>> = ({
       updateStatusConversation,
       updateStatusConversations,
    );
+   useListenChangeUserStatus();
 
    return (
       <ConversationsContext.Provider

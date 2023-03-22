@@ -57,13 +57,27 @@ export const ChatProvider = ({ children }: ChatProviderProps) => {
       setCurrentMessages(messagesFetched || []);
    }, [messagesFetched]);
 
-   const handleAddMessage = useCallback(
+   const handleUpdateMessage = useCallback(
       (message: Message) => {
          if (message.conversation !== conversation?._id) return;
+         const isExist = currentMessages.find(
+            (m) => m.idClient === message.idClient,
+         );
 
-         setCurrentMessages((prev) => [...prev, message]);
+         if (!isExist) {
+            return setCurrentMessages((prev) => [...prev, message]);
+         }
+
+         setCurrentMessages((prev) => {
+            return prev.map((prevMessage) => {
+               if (prevMessage.idClient === message.idClient) {
+                  return message;
+               }
+               return prevMessage;
+            });
+         });
       },
-      [conversation],
+      [currentMessages],
    );
 
    const handleUpdateMessages = useCallback(
@@ -81,8 +95,8 @@ export const ChatProvider = ({ children }: ChatProviderProps) => {
       [conversation],
    );
 
-   useListenHasMessageSent(handleAddMessage);
-   useListenHasNewMessage(handleAddMessage);
+   useListenHasMessageSent(handleUpdateMessage);
+   useListenHasNewMessage(handleUpdateMessage);
    useListenHasMessageReceived(handleUpdateMessages);
    useListenHasMessageSeen(handleUpdateMessages);
 

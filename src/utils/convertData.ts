@@ -13,6 +13,7 @@ export const getDataFromConversation = (
 
    const avatar = conversation.avatar || otherMember?.avatar;
    const isOnline = otherMember?.isOnline;
+
    const fullName =
       conversation.name ||
       (otherMember &&

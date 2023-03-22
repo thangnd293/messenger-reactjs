@@ -43,16 +43,6 @@ export function useDetectUserReadMessages(
             members.map((member) => member._id),
          );
 
-         // updateStatusConversation(lastMessageReceived.idClient, {
-         //    status: MessageStatusEnum.Seen,
-         //    seenBy: [
-         //       {
-         //          user,
-         //          activeTime: new Date().toISOString(),
-         //       },
-         //    ],
-         // });
-
          return () => {
             socket.off(SOCKET_EVENT.READ_MESSAGE);
          };

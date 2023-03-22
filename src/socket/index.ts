@@ -14,10 +14,6 @@ export class SocketSingleton {
       this.socket.on('connect', () => {
          console.log('Connected to server:', this.socket.id);
       });
-
-      this.socket.on('log', (arg) => {
-         console.log('Log from Server', arg);
-      });
    }
 
    public static getInstance() {

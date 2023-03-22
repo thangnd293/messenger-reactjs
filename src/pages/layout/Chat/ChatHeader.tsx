@@ -17,7 +17,7 @@ const Header = () => {
    const { conversation } = useChatContext();
    if (!conversation) return null;
 
-   const { fullName, isOnline, avatar } = getDataFromConversation(
+   const { fullName, isOnline, avatar, lastActive } = getDataFromConversation(
       conversation,
       user,
    );
@@ -34,7 +34,12 @@ const Header = () => {
          <Stack direction="row" alignItems="center" spacing="16px">
             {conversation ? (
                <>
-                  <Avatar name={fullName} avatar={avatar} isOnline={isOnline} />
+                  <Avatar
+                     name={fullName}
+                     avatar={avatar}
+                     isOnline={isOnline}
+                     lastActive={lastActive}
+                  />
                   <Typography variant="smallTextBold">{fullName}</Typography>
                </>
             ) : (

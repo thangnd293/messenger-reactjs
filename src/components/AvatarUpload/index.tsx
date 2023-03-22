@@ -1,21 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Button, CircularProgress, Stack, Typography } from '@mui/material';
 import useCloudinaryUpload from '@/hook/useCloudinaryUpload';
-import { Cloudinary } from '@cloudinary/url-gen';
-import { thumbnail } from '@cloudinary/url-gen/actions/resize';
-import { FocusOn } from '@cloudinary/url-gen/qualifiers/focusOn';
-import { focusOn } from '@cloudinary/url-gen/qualifiers/gravity';
 import { FieldProps, useField } from '@formiz/core';
 import Avatar from '../Avatar';
-
-const CLOUD_NAME = import.meta.env.VITE_CLOUD_NAME;
 
 type Props = FieldProps;
 
 const AvatarUpload = (props: Props) => {
-   const { defaultValue } = props;
-   const [avatar, setAvatar] = useState<string | undefined>(defaultValue);
-   const { setValue } = useField(props);
+   const { setValue, value } = useField(props);
    const { handleUploadToCloudinary, uploadStates } = useCloudinaryUpload();
 
    const isUploading = uploadStates?.[0]?.progress === 'uploading';
@@ -31,24 +23,10 @@ const AvatarUpload = (props: Props) => {
       if (!public_id) return;
 
       setValue(public_id);
-      const cld = new Cloudinary({
-         cloud: {
-            cloudName: CLOUD_NAME,
-         },
-      });
-
-      const myImage = cld.image(public_id);
-
-      myImage.resize(
-         thumbnail().width(100).height(100).gravity(focusOn(FocusOn.face())),
-      );
-
-      setAvatar(myImage.toURL());
    }, [uploadStates]);
 
    const handleDelete = () => {
       setValue('');
-      setAvatar(undefined);
    };
 
    return (
@@ -66,7 +44,7 @@ const AvatarUpload = (props: Props) => {
             {isUploading ? (
                <CircularProgress size="30px" />
             ) : (
-               <Avatar width={100} height={100} avatar={avatar} />
+               <Avatar width={100} height={100} avatar={value} />
             )}
          </Stack>
 
@@ -90,7 +68,7 @@ const AvatarUpload = (props: Props) => {
                </Button>
                <Button
                   variant="outlined"
-                  disabled={!avatar}
+                  disabled={!value}
                   onClick={handleDelete}
                >
                   Delete

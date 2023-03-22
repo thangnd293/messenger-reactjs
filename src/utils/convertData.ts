@@ -12,7 +12,8 @@ export const getDataFromConversation = (
    );
 
    const avatar = conversation.avatar || otherMember?.avatar;
-   const isOnline = otherMember?.isOnline;
+   const isOnline = otherMember?.isOnline || false;
+   const lastActive = otherMember?.lastActive || '';
 
    const fullName =
       conversation.name ||
@@ -24,6 +25,7 @@ export const getDataFromConversation = (
       avatar,
       isOnline,
       fullName,
+      lastActive,
    };
 };
 

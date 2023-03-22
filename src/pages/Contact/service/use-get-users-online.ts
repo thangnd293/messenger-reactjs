@@ -15,6 +15,7 @@ type FriendOnline = {
 };
 
 const contactsOnlineKey = ['friends', 'online'];
+
 export const useContactsOnline = (
    config: UseQueryOptions<
       ResponseData<FriendOnline[]>,

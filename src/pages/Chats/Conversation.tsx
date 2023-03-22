@@ -44,7 +44,7 @@ const Conversation = ({ conversation, active }: Props) => {
 
    const status = getStatusOfConversation();
 
-   const { avatar, fullName, isOnline } = getDataFromConversation(
+   const { avatar, fullName, isOnline, lastActive } = getDataFromConversation(
       conversation,
       user,
    );
@@ -68,7 +68,12 @@ const Conversation = ({ conversation, active }: Props) => {
             },
          }}
       >
-         <Avatar avatar={avatar} name={fullName} isOnline={isOnline} />
+         <Avatar
+            avatar={avatar}
+            name={fullName}
+            isOnline={isOnline}
+            lastActive={lastActive}
+         />
          <Stack>
             <Typography variant="smallTextBold">{fullName}</Typography>
             <Typography component="p">

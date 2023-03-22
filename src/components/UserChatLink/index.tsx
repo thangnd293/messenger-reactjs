@@ -5,11 +5,21 @@ import AutoSuffixLink from '../AutoSuffixLink';
 import Avatar from '../Avatar';
 
 interface Props
-   extends Pick<User, 'firstName' | 'lastName' | 'avatar' | 'isOnline'> {
+   extends Pick<
+      User,
+      'firstName' | 'lastName' | 'avatar' | 'isOnline' | 'lastActive'
+   > {
    to: string;
 }
 
-const UserChatLink = ({ firstName, lastName, avatar, isOnline, to }: Props) => {
+const UserChatLink = ({
+   firstName,
+   lastName,
+   avatar,
+   isOnline = false,
+   lastActive = '',
+   to,
+}: Props) => {
    const fullName = getFullName(firstName, lastName);
 
    return (
@@ -28,7 +38,12 @@ const UserChatLink = ({ firstName, lastName, avatar, isOnline, to }: Props) => {
             },
          })}
       >
-         <Avatar name={fullName} isOnline={isOnline} avatar={avatar} />
+         <Avatar
+            name={fullName}
+            isOnline={isOnline}
+            lastActive={lastActive}
+            avatar={avatar}
+         />
          <Typography variant="smallText" component="p">
             {fullName}
          </Typography>

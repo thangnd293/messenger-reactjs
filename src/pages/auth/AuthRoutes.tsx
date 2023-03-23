@@ -1,8 +1,10 @@
+import { Suspense, lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import SubLayout from '../layout/SubLayout';
 import PublicOnlyRouteGuard from '../router/guards/PublicOnlyRouteGuard';
-import LoginPage from './LoginPage';
-import SignUpPage from './SignUpPage';
+
+const LoginPage = lazy(() => import('./LoginPage'));
+const SignUpPage = lazy(() => import('./SignUpPage'));
 
 const AuthRoutes = () => {
    return (

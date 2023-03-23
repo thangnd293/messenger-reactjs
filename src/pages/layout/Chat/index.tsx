@@ -1,4 +1,3 @@
-import { ConversationProvider } from '../../Chats/ConversationsContext';
 import Chat from './Chat';
 import { ChatProvider } from './ChatContext';
 

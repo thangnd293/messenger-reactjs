@@ -1,7 +1,7 @@
 import Axios from 'axios';
-import { useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Box, Stack, useMediaQuery } from '@mui/material';
+import { Box, CircularProgress, Stack, useMediaQuery } from '@mui/material';
 import { UI } from '@/constants';
 import { ConversationProvider } from '@/pages/Chats/ConversationsContext';
 import { useAuthContext } from '@/pages/auth/AuthContext';
@@ -82,7 +82,20 @@ const MainLayout = () => {
                      },
                   })}
                >
-                  <Outlet />
+                  <Suspense
+                     fallback={
+                        <Stack
+                           width="100%"
+                           height="100%"
+                           alignItems="center"
+                           justifyContent="center"
+                        >
+                           <CircularProgress />
+                        </Stack>
+                     }
+                  >
+                     <Outlet />
+                  </Suspense>
                </Stack>
                <ChatWithProviders />
             </Box>

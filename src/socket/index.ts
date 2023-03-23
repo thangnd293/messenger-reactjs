@@ -1,13 +1,15 @@
 import { Socket, io } from 'socket.io-client';
 import { AUTH_TOKEN_KEY } from '@/pages/auth/AuthContext';
 
+const apiUrl = import.meta.env.VITE_PUBLIC_API_BASE_URL;
+
 export class SocketSingleton {
    private static instance: SocketSingleton | null;
    public socket: Socket;
 
    private constructor() {
       const token = localStorage.getItem(AUTH_TOKEN_KEY);
-      this.socket = io('http://localhost:2509', {
+      this.socket = io(apiUrl, {
          auth: { token },
       });
 
